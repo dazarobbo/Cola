@@ -1,0 +1,21 @@
+{
+    "name": "dazarobbo/cola",
+	"version": "1.0.0",
+    "description": "Common functions and objects",
+	"license": "MIT",
+	"type": "package",
+    "authors": [
+		{
+            "name": "dazarobbo",
+            "email": "dazarobbo@live.com"
+		}
+	],
+    "require": {
+		
+	},
+	"autoload": {
+		"psr-4": {
+			"Cola\\": "src"
+		}
+	}
+}
