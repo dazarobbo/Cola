@@ -22,8 +22,8 @@ abstract class Number {
 	public static function between($n, $min, $max, $inclusive = true){
 		
 		if($inclusive){
-			return static::GreaterThanOrEqualTo($n, $min) &&
-					static::LessThanOrEqualTo($n, $max);
+			return static::greaterThanOrEqualTo($n, $min) &&
+					static::lessThanOrEqualTo($n, $max);
 		}
 		
 		return static::greaterThan($n, $min) &&
