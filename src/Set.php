@@ -25,7 +25,7 @@ class Set extends Object implements ISet {
 		
 		if(\is_callable($predicate)){
 			foreach($this->_Storage as $key => $value){
-				if($predicate($value)){
+				if($predicate($value, $key)){
 					unset($this->_Storage[$key]);
 				}
 			}
@@ -47,8 +47,8 @@ class Set extends Object implements ISet {
 		
 		$set = new static();
 		
-		foreach($this->_Storage as $item){
-			$set->_Storage[] = $deep ? clone $item : $item;
+		foreach($this->_Storage as $key => $item){
+			$set->_Storage[$key] = $deep ? clone $item : $item;
 		}
 		
 		return $set;
@@ -142,10 +142,10 @@ class Set extends Object implements ISet {
 		
 			$set = new static();
 			
-			foreach($this->_Storage as $item){
+			foreach($this->_Storage as $key => $item){
 				if($set->some(function($elem) use ($item, $compare) {
 					return $compare($item, $elem); })){
-						$set->_Storage[] = $item;
+						$set->_Storage[$key] = $item;
 				}
 			}
 			
