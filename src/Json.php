@@ -24,7 +24,7 @@ abstract class Json {
 	public static function serialise(
 			$o,
 			$options = 0,
-			$depth = static::DEFAULT_OUTPUT_DEPTH){
+			$depth = self::DEFAULT_OUTPUT_DEPTH){
 		
 		$s = \json_encode($o, $options, $depth);
 		self::$_LastError = \json_last_error();
@@ -40,7 +40,7 @@ abstract class Json {
 	public static function deserialise(
 			$str,
 			$assoc = false,
-			$depth = static::DEFAULT_INPUT_DEPTH,
+			$depth = self::DEFAULT_INPUT_DEPTH,
 			$options = 0){
 		
 		$o = \json_decode($str, $assoc, $depth, $options);
