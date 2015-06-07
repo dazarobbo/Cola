@@ -7,6 +7,8 @@ namespace Cola\Functions;
  */
 abstract class String {
 
+	const EEMPTY = '';
+	
 	/**
 	 * Compares strings - alias for strcmp
 	 * @param string $l
