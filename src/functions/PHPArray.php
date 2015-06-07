@@ -62,8 +62,8 @@ class PHPArray {
 	 * @param array $arr
 	 * @param callable $action Function with two optional parameters: $v value, $k key
 	 */
-	public static function each(array &$arr, callable $action){
-		foreach($arr as $k => &$v){
+	public static function each(array $arr, callable $action){
+		foreach($arr as $k => $v){
 			$action($v, $k);
 		}
 	}
@@ -74,8 +74,8 @@ class PHPArray {
 	 * @param callable $predicate
 	 * @return boolean
 	 */
-	public static function every(array &$arr, callable $predicate){
-		foreach($arr as $k => &$v){
+	public static function every(array $arr, callable $predicate){
+		foreach($arr as $k => $v){
 			if($predicate($v, $k) !== true){
 				return false;
 			}
@@ -104,7 +104,7 @@ class PHPArray {
 	 * @param callable $predicate
 	 * @return boolean
 	 */
-	public static function find(array &$arr, callable $predicate){
+	public static function find(array $arr, callable $predicate){
 		return static::some($arr, $predicate);
 	}
 
@@ -114,7 +114,7 @@ class PHPArray {
 	 * @param callable $predicate
 	 * @return mixed|null Null is returned if no match was found
 	 */
-	public static function findKey(array &$arr, callable $predicate){
+	public static function findKey(array $arr, callable $predicate){
 		foreach($arr as $k => &$v){
 			if($predicate($v, $k) === true){
 				return $k;
@@ -129,9 +129,9 @@ class PHPArray {
 	 * @param \Cola\Functions\callable $predicate
 	 * @return mixed|null Null is returned if no match was found
 	 */
-	public static function single(array &$arr, callable $predicate){
+	public static function single(array $arr, callable $predicate){
 		
-		foreach($arr as $k => &$v){
+		foreach($arr as $k => $v){
 			if($predicate($v, $k) === true){
 				return $v;
 			}
