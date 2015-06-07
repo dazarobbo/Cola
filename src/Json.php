@@ -7,6 +7,9 @@ namespace Cola;
  */
 abstract class Json {
 
+	const DEFAULT_INPUT_DEPTH = 512;
+	const DEFAULT_OUTPUT_DEPTH = 512;
+	
 	/**
 	 * Holds the last error resulted from calling a json_* function
 	 * @var int
@@ -18,10 +21,15 @@ abstract class Json {
 	 * @param mixed $o
 	 * @return string
 	 */
-	public static function serialise($o){
-		$s = \json_encode($o);
+	public static function serialise(
+			$o,
+			$options = 0,
+			$depth = static::DEFAULT_OUTPUT_DEPTH){
+		
+		$s = \json_encode($o, $options, $depth);
 		self::$_LastError = \json_last_error();
 		return $s;
+		
 	}
 
 	/**
@@ -29,12 +37,18 @@ abstract class Json {
 	 * @param string $str
 	 * @return mixed
 	 */
-	public static function deserialise($str){
-		$o = \json_decode($str);
+	public static function deserialise(
+			$str,
+			$assoc = false,
+			$depth = static::DEFAULT_INPUT_DEPTH,
+			$options = 0){
+		
+		$o = \json_decode($str, $assoc, $depth, $options);
 		self::$_LastError = \json_last_error();
 		return $o;
+		
 	}
-
+	
 	/**
 	 * Returns the last error (if any) from calling Serialise or Deserialise
 	 * @see http://php.net/manual/en/function.json-last-error.php
