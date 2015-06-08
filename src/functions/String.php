@@ -214,7 +214,7 @@ abstract class String {
 	 * @return string The encoded string
 	 */
 	public static function htmlEncode($str){
-		return \htmlentities($str, \ENT_QUOTES, 'UTF-8', true);
+		return \htmlspecialchars($str, \ENT_QUOTES | ENT_HTML401, 'UTF-8', true);
 	}
 	
 }
