@@ -162,7 +162,7 @@ abstract class Enum extends Object implements IComparable {
 		if(\is_int($this->_Value) && \is_int($obj->_Value)){
 			return Number::compare($this->_Value, $obj->_Value);
 		}
-		else if(is_string($this->_Value) && is_string($obj->_Value)){
+		else if(\is_string($this->_Value) && \is_string($obj->_Value)){
 			return \strcmp($this->_Value, $obj->_Value);
 		}
 		else{
