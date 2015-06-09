@@ -8,7 +8,7 @@ namespace Cola;
 class Object {
 
 	public function __toString() {
-		return __CLASS__;
+		return \get_called_class();
 	}
 
 }

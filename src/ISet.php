@@ -14,6 +14,7 @@ interface ISet extends \ArrayAccess, \Countable, IClearable,
 	public function copy($deep = true);
 	public function each(callable $predicate);
 	public function every(callable $predicate);
+	public static function fromArray(array $arr);
 	public function isEmpty();
 	public function map(callable $predicate);
 	public function remove($obj);

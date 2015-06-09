@@ -66,6 +66,12 @@ class Set extends Object implements ISet {
 	public function every(callable $predicate) {
 		return PHPArray::every($this->_Storage, $predicate);
 	}
+	
+	public static function fromArray(array $arr) {
+		$set = new static();
+		$set->_Storage = $arr;
+		return $set;
+	}
 
 	public function getIterator() {
 		return new \ArrayIterator($this->_Storage);
