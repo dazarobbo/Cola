@@ -7,7 +7,14 @@ namespace Cola;
  */
 abstract class Json {
 
+	/**
+	 * @var int maximum depth when decoding a JSON string
+	 */
 	const DEFAULT_INPUT_DEPTH = 512;
+	
+	/**
+	 * @var int maximum depth when encoding to a JSON string
+	 */
 	const DEFAULT_OUTPUT_DEPTH = 512;
 	
 	/**
@@ -27,7 +34,7 @@ abstract class Json {
 			$depth = self::DEFAULT_OUTPUT_DEPTH){
 		
 		$s = \json_encode($o, $options, $depth);
-		self::$_LastError = \json_last_error();
+		static::$_LastError = \json_last_error();
 		return $s;
 		
 	}
@@ -44,7 +51,7 @@ abstract class Json {
 			$options = 0){
 		
 		$o = \json_decode($str, $assoc, $depth, $options);
-		self::$_LastError = \json_last_error();
+		static::$_LastError = \json_last_error();
 		return $o;
 		
 	}
@@ -52,10 +59,10 @@ abstract class Json {
 	/**
 	 * Returns the last error (if any) from calling Serialise or Deserialise
 	 * @see http://php.net/manual/en/function.json-last-error.php
-	 * @return int One of the JSON_ constants
+	 * @return int One of the JSON_ERROR_ constants
 	 */
 	public static function lastError(){
-		return self::$_LastError;
+		return static::$_LastError;
 	}
 
 }

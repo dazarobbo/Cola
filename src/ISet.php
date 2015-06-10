@@ -16,6 +16,7 @@ interface ISet extends \ArrayAccess, \Countable, IClearable,
 	public function every(callable $predicate);
 	public static function fromArray(array $arr);
 	public function isEmpty();
+	public function join($str = null);
 	public function map(callable $predicate);
 	public function remove($obj);
 	public function some(callable $predicate);

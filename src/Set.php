@@ -85,6 +85,10 @@ class Set extends Object implements ISet {
 		return $this->count() === 0;
 	}
 
+	public function join($str = null){
+		return \implode($str ? $str : '', $this->_Storage);
+	}
+	
 	public function map(callable $predicate) {
 		$set = new static();
 		$set->_Storage = PHPArray::map($this->_Storage, $predicate);

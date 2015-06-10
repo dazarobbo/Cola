@@ -7,9 +7,14 @@ use Cola\StringComparison;
 
 /**
  * String
+ * 
+ * An immutable string class.
+ * 
+ * $str = new String('一二三四五');
+ * echo $str->substring(1, 3); //二三四
  */
-class String extends Object implements \Countable,
-		\JsonSerializable, \Serializable, IComparable, \ArrayAccess,
+class String extends ReadOnlyArrayAccess implements \Countable,
+		\JsonSerializable, \Serializable, IComparable,
 		\IteratorAggregate {
 
 	/**
@@ -41,7 +46,27 @@ class String extends Object implements \Countable,
 	 * @var string
 	 */
 	protected $_Encoding = self::ENCODING;
+	
 
+	/**
+	 * Returns the code unit for the string.
+	 * This is only useful on single-character strings
+	 * @return int decimal value of the code unit
+	 */
+	public function codeUnit(){
+		
+		$code = 0;
+		$l = \strlen($this->_Value);
+		$byte = $l - 1;
+
+		for($i = 0; $i < $l; ++$i, --$byte){
+			$code += \ord($this->_Value[$i]) << $byte * 8;
+		}
+		
+		return $code;
+		
+	}
+	
 	/**
 	 * Create a new string given a scalar PHP string type and an optional encoding
 	 * @param string $str initial string to encapsulate
@@ -50,7 +75,7 @@ class String extends Object implements \Countable,
 	 */
 	public function __construct($str = self::NONE, $enc = self::ENCODING) {
 		
-		if(!is_string($str)){
+		if(!\is_string($str)){
 			throw new \InvalidArgumentException('$str must be a PHP string');
 		}
 		
@@ -65,10 +90,10 @@ class String extends Object implements \Countable,
 	}
 	
 	/**
-	 * Compares this string against a given string lexi
+	 * Compares this string against a given string lexicographically
 	 * @param static $obj
-	 * @return type
-	 * @throws \RuntimeException
+	 * @return int -1, 0, or 1 depending on order (see \strcmp)
+	 * @throws \RuntimeException if comparable type is incompatible
 	 */
 	public function compareTo($obj) {
 		
@@ -97,7 +122,9 @@ class String extends Object implements \Countable,
 	 * @return \static
 	 */
 	public function concat(){
-		return new static($this->_Value .= \implode(static::NONE, \func_get_args()));
+		return new static(
+				$this->_Value .= \implode(static::NONE, \func_get_args()),
+				$this->_Encoding);
 	}
 	
 	/**
@@ -106,6 +133,23 @@ class String extends Object implements \Countable,
 	 */
 	public function contains(self $str){
 		return \mb_strpos($this->_Value, $str->_Value, 0, $this->_Encoding) !== false;
+	}
+	
+	/**
+	 * Converts the string to a new encoding
+	 * @see https://php.net/manual/en/mbstring.supported-encodings.php
+	 * @param string $newEncoding
+	 * @return \Cola\String
+	 */
+	public function convertEncoding($newEncoding){
+
+		$this->_Value = \mb_convert_encoding(
+				$this->_Value,
+				\strtoupper($newEncoding),
+				$this->_Encoding);
+		
+		return $this;
+		
 	}
 	
 	/**
@@ -130,12 +174,33 @@ class String extends Object implements \Countable,
 	}
 	
 	/**
-	 * Create a String from a PHP string
-	 * @param string $str
+	 * Converts a code unit to a unicode character in UTF-8 encoding
+	 * @param int $unit
+	 * @param string $encoding default is UTF-8
 	 * @return \static
 	 */
-	public static function fromString($str){
-		return new static($str);
+	public static function fromCodeUnit($unit, $encoding = self::ENCODING){
+		return new static(\mb_convert_encoding(
+				\sprintf('&#%s;', $unit), $encoding, 'HTML-ENTITIES'),
+				$encoding);
+	}
+	
+	/**
+	 * Create a String from a PHP string
+	 * @param string $str
+	 * @param string $encoding default is UTF-8
+	 * @return \static
+	 */
+	public static function fromString($str, $encoding = self::ENCODING){
+		return new static($str, $encoding);
+	}
+
+	/**
+	 * Returns the current encoding in use
+	 * @return string
+	 */
+	public function getEncoding(){
+		return $this->_Encoding;
 	}
 	
 	public function getIterator() {
@@ -170,7 +235,16 @@ class String extends Object implements \Countable,
 	 */
 	public function insert($index, self $str){
 		return new static($this->substring(0, $index) . $str->_Value .
-				$this->substring($index));
+				$this->substring($index), $this->_Encoding);
+	}
+	
+	/**
+	 * Returns a PHP string with a given sprintf format string
+	 * @param string $format only one %{} specifier
+	 * @return string
+	 */
+	public function __invoke($format) {
+		echo \sprintf($format, $this->_Value);
 	}
 	
 	/**
@@ -196,7 +270,7 @@ class String extends Object implements \Countable,
 	 * @return \static
 	 */
 	public static function join(Set $set, self $str){
-		return new static(\implode($str->_Value, $set->toArray()));
+		return new static(\implode($str->_Value, $set->toArray()), $str->_Encoding);
 	}
 	
 	/**
@@ -233,8 +307,8 @@ class String extends Object implements \Countable,
 	 */
 	public function lcfirst(){
 		$str = $this->_Value;
-		$str[0] = \mb_strtolower($str[0]);
-		return new static($str);
+		$str[0] = \mb_strtolower($str[0], $this->_Encoding);
+		return new static($str, $this->_Encoding);
 	}
 	
 	/**
@@ -251,37 +325,9 @@ class String extends Object implements \Countable,
 	}
 
 	public function offsetGet($offset) {
-		return new static($this->substring($offset, 1)->_Value);
+		return new static($this->substring($offset, 1)->_Value, $this->_Encoding);
 	}
-
-	public function offsetSet($offset, $value) {
-		$this->_Value = $this->substring(0, $offset) . $value .
-				$this->substring($offset + 1);
-	}
-
-	public function offsetUnset($offset) {
-		$this->_Value = $this->substring(0, $offset) . $this->substring($offset + 1);
-	}
-	
-	/**
-	 * Returns the code unit for the string.
-	 * This is only useful on single-character strings
-	 * @return int decimal value of the code unit
-	 */
-	public function codeUnit(){
-		
-		$code = 0;
-		$l = \strlen($this->_Value);
-		$byte = $l - 1;
-
-		for($i = 0; $i < $l; ++$i, --$byte){
-			$code += ord($this->_Value[$i]) << $byte * 8;
-		}
-		
-		return $code;
-		
-	}
-	
+			
 	/**
 	 * Returns a new string padded $num number of times at the beginning
 	 * @param int $num
@@ -289,7 +335,7 @@ class String extends Object implements \Countable,
 	 * @return \static
 	 */
 	public function padLeft($num, self $char){
-		return new static(\str_repeat($char->_Value, $num) . $this->_Value);
+		return new static($char->repeat($num)->_Value . $this->_Value, $this->_Encoding);
 	}
 	
 	/**
@@ -299,7 +345,7 @@ class String extends Object implements \Countable,
 	 * @return \static
 	 */
 	public function padRight($num, self $char){
-		return new static($this->_Value . \str_repeat($char->_Value, $num));
+		return new static($this->_Value . $char->repeat($num)->_Value, $this->_Encoding);
 	}
 	
 	/**
@@ -309,7 +355,17 @@ class String extends Object implements \Countable,
 	 * @return \static
 	 */
 	public function remove(self $find, self $replace){
-		return new static(\str_replace($find, $replace, $this->_Value));
+		return new static(\str_replace($find, $replace, $this->_Value), $this->_Encoding);
+	}
+	
+	/**
+	 * Returns a new string with the current string repeated $times times
+	 * @param int $times
+	 * @return \static
+	 */
+	public function repeat($times){
+		return new static(\implode('', \array_fill(0, $times, $this->_Value)),
+				$this->_Encoding);
 	}
 
 	/**
@@ -319,7 +375,8 @@ class String extends Object implements \Countable,
 	 * @return \static
 	 */
 	public function substring($start, $length = null){
-		return new static(\mb_substr($this->_Value, $start, $length, $this->_Encoding));
+		return new static(\mb_substr($this->_Value, $start, $length, $this->_Encoding),
+				$this->_Encoding);
 	}
 
 	/**
@@ -330,16 +387,27 @@ class String extends Object implements \Countable,
 		return \serialize([$this->_Value, $this->_Encoding]);
 	}
 	
+	public function shuffle(){
+		
+		$chars = $this->toCharArray();
+		\shuffle($chars);
+		
+		return new static(
+				\implode(static::NONE, $chars),
+				$this->_Encoding);
+		
+	}
+	
 	/**
 	 * Splits this string according to a regular expression
-	 * @param string $regex
+	 * @param string $regex optional default is to split all characters
 	 * @param int $limit limit number of splits, default is -1 (no limit)
 	 * @return Set Cola\Set of string (not Cola\String)
 	 */
-	public function split($regex, $limit = -1){
-		return Set::fromArray(\preg_split($regex, $this->_Value, $limit));		
+	public function split($regex = '//u', $limit = -1){
+		return Set::fromArray(\preg_split($regex, $this->_Value, $limit, \PREG_SPLIT_NO_EMPTY));		
 	}
-
+	
 	/**
 	 * Whether this string starts with a given string
 	 * @see http://stackoverflow.com/a/3282864/570787
@@ -349,15 +417,11 @@ class String extends Object implements \Countable,
 	 */
 	public function startsWith(self $str, StringComparison $cmp = null){
 		
-		if($cmp === null || $cmp->Value === StringComparison::CASE_SENSITIVE){
-			return $this
-					->substring(0, $str->length())
-					->_Value === $str->_Value;
+		if($cmp === null || $cmp->getValue() === StringComparison::CASE_SENSITIVE){
+			return $this->substring(0, $str->length())->_Value === $str->_Value;
 		}
 		else{
-			return $this
-					->substring(0, $str->length())
-					->toLower()
+			return $this->substring(0, $str->length())->toLower()
 					->_Value === $str->toLower()->_Value;
 		}
 		
@@ -372,7 +436,7 @@ class String extends Object implements \Countable,
 		$arr = [];
 		
 		for($i = 0, $l = $this->length(); $i < $l; ++$i){
-			$arr[] = \mb_substr($this->_Value, $i, 1);
+			$arr[] = \mb_substr($this->_Value, $i, 1, $this->_Encoding);
 		}
 		
 		return $arr;
@@ -400,7 +464,7 @@ class String extends Object implements \Countable,
 	 * @return \static
 	 */
 	public function toUpper(){
-		return new static(\mb_strtoupper($this->_Value, $this->_Encoding));
+		return new static(\mb_strtoupper($this->_Value, $this->_Encoding), $this->_Encoding);
 	}
 	
 	/**
@@ -411,40 +475,18 @@ class String extends Object implements \Countable,
 	public function trim(Set $chars = null){
 		
 		if($chars === null){
-			return new static(\trim($this->_Value));
+			return new static(\trim($this->_Value), $this->_Encoding);
 		}
 	
 		$chars = \preg_quote(\implode(static::NONE, $chars->toArray()));
 		
 		$str = \preg_replace(
-				sprintf('/(^[%s]+)|([%s]+$)/us', $chars, $chars),
+				\sprintf('/(^[%s]+)|([%s]+$)/us', $chars, $chars),
 				static::NONE,
 				$this->_Value);
 		
-		return new static($str);
+		return new static($str, $this->_Encoding);
 			
-	}
-	
-	/**
-	 * Trims whitespace or a set of characters from the beginning of this string
-	 * @param \Cola\Set $chars optional
-	 * @return \static
-	 */
-	public function trimStart(Set $chars = null){
-		
-		if($chars === null){
-			return new static(\ltrim($this->_Value));
-		}
-		
-		$chars = \preg_quote(\implode(static::NONE, $chars->toArray()));
-		
-		$str = \preg_replace(
-				sprintf('/^[%s]+/us', $chars),
-				static::NONE,
-				$this->_Value);
-		
-		return new static($str);
-		
 	}
 	
 	/**
@@ -455,17 +497,39 @@ class String extends Object implements \Countable,
 	public function trimEnd(Set $chars = null){
 		
 		if($chars === null){
-			return new static(\rtrim($this->_Value));
+			return new static(\rtrim($this->_Value), $this->_Encoding);
 		}
 		
 		$chars = \preg_quote(\implode(static::NONE, $chars->toArray()));
 		
 		$str = \preg_replace(
-				sprintf('/[%s]+$/us', $chars),
+				\sprintf('/[%s]+$/us', $chars),
 				static::NONE,
 				$this->_Value);
 		
-		return new static($str);
+		return new static($str, $this->_Encoding);
+		
+	}
+	
+	/**
+	 * Trims whitespace or a set of characters from the beginning of this string
+	 * @param \Cola\Set $chars optional
+	 * @return \static
+	 */
+	public function trimStart(Set $chars = null){
+		
+		if($chars === null){
+			return new static(\ltrim($this->_Value), $this->_Encoding);
+		}
+		
+		$chars = \preg_quote(\implode(static::NONE, $chars->toArray()));
+		
+		$str = \preg_replace(
+				\sprintf('/^[%s]+/us', $chars),
+				static::NONE,
+				$this->_Value);
+		
+		return new static($str, $this->_Encoding);
 		
 	}
 	
@@ -475,8 +539,8 @@ class String extends Object implements \Countable,
 	 */
 	public function ucfirst(){
 		$str = $this->_Value;
-		$str[0] = mb_strtoupper($str[0]);
-		return new static($str);
+		$str[0] = \mb_strtoupper($str[0], $this->_Encoding);
+		return new static($str, $this->_Encoding);
 	}
 	
 	/**
