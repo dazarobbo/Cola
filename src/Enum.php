@@ -20,6 +20,26 @@ abstract class Enum extends Object implements IComparable {
 	}
 
 	/**
+	 * Creates a new enum from the name of the function being called statically
+	 * @param string $name
+	 * @param array $arguments Ignored
+	 * @return \static
+	 */
+	public static function __callStatic($name, $arguments){
+
+		$name = \strtoupper($name);
+		
+		foreach(static::getConstants() as $enumName => $value){
+			if($name === \strtoupper($enumName)){
+				return new static($value);
+			}
+		}
+		
+		return null;
+		
+	}
+	
+	/**
 	 * Checks a given value against the class' constants and
 	 * returns a new enum if a match is found
 	 * @param mixed $var
@@ -61,7 +81,7 @@ abstract class Enum extends Object implements IComparable {
 	 * Returns an associative array of constant name and values
 	 * @return array
 	 */
-	protected static function getConstants(){
+	public static function getConstants(){
 		$refl = new \ReflectionClass(\get_called_class());
 		return $refl->getConstants();
 	}
@@ -80,6 +100,14 @@ abstract class Enum extends Object implements IComparable {
 		
 		return null;
 		
+	}
+	
+	/**
+	 * Returns the inner value of this enum
+	 * @return mixed
+	 */
+	public function getValue(){
+		return $this->_Value;
 	}
 	
 	/**
