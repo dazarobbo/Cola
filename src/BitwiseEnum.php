@@ -10,18 +10,13 @@ namespace Cola;
 abstract class BitwiseEnum extends Enum {
 
 	/**
-	 * Parses a string containing an integer into an enum
-	 * @param int|string $var
+	 * Adds a flag to this enum
+	 * @param int $flag
 	 * @return \static
 	 */
-	public static function parse($var) {
-		
-		if(!\is_numeric($var)){
-			return null;
-		}
-		
-		return static::fromInt(\intval($var, 10));
-		
+	public function addFlag($flag){
+		$this->_Value |= $flag;
+		return $this;
 	}
 	
 	public static function fromInt($int){
@@ -43,34 +38,6 @@ abstract class BitwiseEnum extends Enum {
 	}
 	
 	/**
-	 * Checks if a given flag/value is defined for this enum
-	 * @param int $flag
-	 * @return bool
-	 */
-	public function hasFlag($flag){
-		return ($this->_Value & $flag) === $flag;
-	}
-	
-	/**
-	 * Adds a flag to this enum
-	 * @param int $flag
-	 * @return \static
-	 */
-	public function addFlag($flag){
-		$this->_Value |= $flag;
-		return $this;
-	}
-	
-	/**
-	 * Inverts the bits of this enum
-	 * @return \static
-	 */
-	public function invert(){
-		$this->_Value = ~$this->_Value;
-		return $this;
-	}
-	
-	/**
 	 * Returns an array of this class' constant names which are defined
 	 * in this instance
 	 * @return array
@@ -82,6 +49,39 @@ abstract class BitwiseEnum extends Enum {
 		});
 		
 		return \array_keys($isSet);
+		
+	}
+			
+	/**
+	 * Checks if a given flag/value is defined for this enum
+	 * @param int $flag
+	 * @return bool
+	 */
+	public function hasFlag($flag){
+		return ($this->_Value & $flag) === $flag;
+	}
+	
+	/**
+	 * Inverts the bits of this enum
+	 * @return \static
+	 */
+	public function invert(){
+		$this->_Value = ~$this->_Value;
+		return $this;
+	}
+		
+	/**
+	 * Parses a string containing an integer into an enum
+	 * @param int|string $var
+	 * @return \static
+	 */
+	public static function parse($var) {
+		
+		if(!\is_numeric($var)){
+			return null;
+		}
+		
+		return static::fromInt(\intval($var, 10));
 		
 	}
 	

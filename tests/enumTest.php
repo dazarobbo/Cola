@@ -19,6 +19,7 @@
 		const USER = 1;
 		const ADMIN = 2;
 		const SUPERUSER = 4;
+		const GOD = 8;
 	}
 	
 	$day = Days::FRIDAY();
@@ -30,3 +31,7 @@
 	foreach(Account::getConstants() as $name => $value){
 		echo 'is ' . ($acc->hasFlag($value) ? '' : 'not ') . $name . PHP_EOL;
 	}
+	
+	$acc->addFlag(Account::GOD);
+	
+	echo implode(', ', $acc->getNames());
