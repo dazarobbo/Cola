@@ -7,9 +7,17 @@ namespace Cola;
  */
 class StringIterator implements \SeekableIterator {
 
+	/**
+	 * @var \Cola\String
+	 */
 	protected $_Str;
+	
+	/**
+	 * @var int
+	 */
 	protected $_Position = 0;
 
+	
 	public function __construct(\Cola\String $str) {
 		$this->_Str = $str;
 	}

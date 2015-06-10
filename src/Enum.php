@@ -14,8 +14,7 @@ abstract class Enum extends Object implements IComparable {
 	 * @var mixed
 	 */
 	protected $_Value;
-	
-	protected static $_Constants = null;
+
 	
 	/**
 	 * Creates a new enum from the name of the function being called statically
@@ -45,7 +44,7 @@ abstract class Enum extends Object implements IComparable {
 	 */
 	public function compareTo($obj) {
 		
-		if(!\is_a($obj, get_called_class())){
+		if(!\is_a($obj, \get_called_class())){
 			throw new \RuntimeException('$obj is not a comparable instance');
 		}
 		

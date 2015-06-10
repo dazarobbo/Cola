@@ -19,9 +19,15 @@ abstract class BitwiseEnum extends Enum {
 		return $this;
 	}
 	
+	/**
+	 * Converts an integer value to an enum of this type
+	 * @param int $int
+	 * @return \static
+	 * @throws \InvalidArgumentException
+	 */
 	public static function fromInt($int){
 		
-		if(!is_int($int)){
+		if(!\is_int($int)){
 			throw new \InvalidArgumentException('$int must be an integer');
 		}
 		
@@ -40,7 +46,7 @@ abstract class BitwiseEnum extends Enum {
 	/**
 	 * Returns an array of this class' constant names which are defined
 	 * in this instance
-	 * @return array
+	 * @return string[]
 	 */
 	public function getNames(){
 		
