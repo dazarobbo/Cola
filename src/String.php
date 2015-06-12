@@ -49,21 +49,32 @@ class String extends ReadOnlyArrayAccess implements \Countable,
 	
 
 	/**
-	 * Returns the code unit for the string.
+	 * Returns the UTF-8 code unit for the string.
 	 * This is only useful on single-character strings
 	 * @return int decimal value of the code unit
 	 */
 	public function codeUnit(){
 		
-		$code = 0;
-		$l = \strlen($this->_Value);
-		$byte = $l - 1;
-
-		for($i = 0; $i < $l; ++$i, --$byte){
-			$code += \ord($this->_Value[$i]) << $byte * 8;
+		$result = \unpack('N', \mb_convert_encoding(
+				$this->_Value,
+				'UCS-4BE',
+				'UTF-8'));
+		
+		if(\is_array($result)){
+			return $result[1];
 		}
 		
-		return $code;
+		return \ord($this->_Value);
+		
+		//$code = 0;
+		//$l = \strlen($this->_Value);
+		//$byte = $l - 1;
+		//
+		//for($i = 0; $i < $l; ++$i, --$byte){
+		//	$code += \ord($this->_Value[$i]) << $byte * 8;
+		//}
+		//
+		//return $code;
 		
 	}
 	
@@ -139,16 +150,14 @@ class String extends ReadOnlyArrayAccess implements \Countable,
 	 * Converts the string to a new encoding
 	 * @see https://php.net/manual/en/mbstring.supported-encodings.php
 	 * @param string $newEncoding
-	 * @return \Cola\String
+	 * @return \static
 	 */
 	public function convertEncoding($newEncoding){
 
-		$this->_Value = \mb_convert_encoding(
-				$this->_Value,
-				\strtoupper($newEncoding),
-				$this->_Encoding);
+		$newEncoding = \strtoupper($newEncoding);
 		
-		return $this;
+		return new static(\mb_convert_encoding($this->_Value, $newEncoding, $this->_Encoding),
+				$newEncoding);
 		
 	}
 	
@@ -159,7 +168,7 @@ class String extends ReadOnlyArrayAccess implements \Countable,
 	 * @return bool
 	 */
 	public function endsWith(self $str, StringComparison $cmp = null){
-				
+		
 		if($cmp === null || $cmp->Value === StringComparison::CASE_SENSITIVE){
 			return $this
 					->substring($this->length() - $str->length(), $str->length())
@@ -176,13 +185,17 @@ class String extends ReadOnlyArrayAccess implements \Countable,
 	/**
 	 * Converts a code unit to a unicode character in UTF-8 encoding
 	 * @param int $unit
-	 * @param string $encoding default is UTF-8
 	 * @return \static
 	 */
-	public static function fromCodeUnit($unit, $encoding = self::ENCODING){
-		return new static(\mb_convert_encoding(
-				\sprintf('&#%s;', $unit), $encoding, 'HTML-ENTITIES'),
-				$encoding);
+	public static function fromCodeUnit($unit){
+		
+		$str = \mb_convert_encoding(
+				\sprintf('&#%s;', $unit),
+				static::ENCODING,
+				'HTML-ENTITIES');
+		
+		return new static($str, static::ENCODING);
+		
 	}
 	
 	/**
@@ -244,7 +257,7 @@ class String extends ReadOnlyArrayAccess implements \Countable,
 	 * @return string
 	 */
 	public function __invoke($format) {
-		echo \sprintf($format, $this->_Value);
+		return \sprintf($format, $this->_Value);
 	}
 	
 	/**
@@ -306,9 +319,18 @@ class String extends ReadOnlyArrayAccess implements \Countable,
 	 * @return \static
 	 */
 	public function lcfirst(){
-		$str = $this->_Value;
-		$str[0] = \mb_strtolower($str[0], $this->_Encoding);
+		
+		if($this->isNullOrWhitespace()){
+			return clone $this;
+		}
+		else if($this->length() === 1){
+			return new static(\mb_strtolower($this->_Value, $this->_Encoding), $this->_Encoding);
+		}
+		
+		$str = $this[0]->lcfirst() . $this->substring(1);
+		
 		return new static($str, $this->_Encoding);
+		
 	}
 	
 	/**
@@ -319,13 +341,19 @@ class String extends ReadOnlyArrayAccess implements \Countable,
 		return $this->count();
 	}
 
-	public function offsetExists($offset) {
+	public function offsetExists($offset){
 		$l = $this->length();
 		return $l !== 0 && $offset >= 0 && $offset < $l;
 	}
 
-	public function offsetGet($offset) {
+	public function offsetGet($offset){
+		
+		if(!isset($this[$offset])){
+			throw new \OutOfBoundsException('$offset is not set');
+		}
+		
 		return new static($this->substring($offset, 1)->_Value, $this->_Encoding);
+		
 	}
 			
 	/**
@@ -354,7 +382,7 @@ class String extends ReadOnlyArrayAccess implements \Countable,
 	 * @param self $replace
 	 * @return \static
 	 */
-	public function remove(self $find, self $replace){
+	public function replace(self $find, self $replace){
 		return new static(\str_replace($find, $replace, $this->_Value), $this->_Encoding);
 	}
 	
@@ -429,7 +457,7 @@ class String extends ReadOnlyArrayAccess implements \Countable,
 	
 	/**
 	 * Returns an array of each character in this string
-	 * @return array
+	 * @return string[]
 	 */
 	public function toCharArray(){
 		
@@ -538,9 +566,18 @@ class String extends ReadOnlyArrayAccess implements \Countable,
 	 * @return \static
 	 */
 	public function ucfirst(){
-		$str = $this->_Value;
-		$str[0] = \mb_strtoupper($str[0], $this->_Encoding);
+		
+		if($this->isNullOrWhitespace()){
+			return clone $this;
+		}
+		else if($this->length() === 1){
+			return new static(\mb_strtoupper($this->_Value, $this->_Encoding), $this->_Encoding);
+		}
+		
+		$str = $this[0]->ucfirst() . $this->substring(1);
+		
 		return new static($str, $this->_Encoding);
+		
 	}
 	
 	/**

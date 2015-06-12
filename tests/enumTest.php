@@ -2,6 +2,8 @@
 
 	require_once '../vendor/autoload.php';
 
+	/*
+	
 	use Cola\Enum;
 	use Cola\BitwiseEnum;
 	
@@ -34,4 +36,4 @@
 	
 	$acc->addFlag(Account::GOD);
 	
-	echo implode(', ', $acc->getNames());
+	echo implode(', ', $acc->getNames()); */

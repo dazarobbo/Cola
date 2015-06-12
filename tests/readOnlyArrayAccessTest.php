@@ -2,6 +2,7 @@
 
 require_once '../vendor/autoload.php';
 
+/*
 class Beatles extends \Cola\ReadOnlyArrayAccess {
 	
 	private static $_Arr = [
@@ -23,4 +24,4 @@ class Beatles extends \Cola\ReadOnlyArrayAccess {
 $group = new Beatles();
 
 echo $group['Bass'];
-$group['Bass'] = 'Ringo';
+$group['Bass'] = 'Ringo';*/
