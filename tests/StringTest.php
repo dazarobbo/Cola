@@ -276,9 +276,6 @@
 			$str2 = $str->padLeft(5, new String('a'));
 			$this->assertEquals('aaaaa一二三四五', \strval($str2));
 			
-			$str3 = $str->padLeft(0, new String('a'));
-			$this->assertEquals('一二三四五', \strval($str3));
-			
 		}
 		
 		public function testPadRight(){
@@ -287,9 +284,6 @@
 			
 			$str2 = $str->padRight(5, new String('a'));
 			$this->assertEquals('一二三四五aaaaa', \strval($str2));
-			
-			$str3 = $str->padRight(0, new String('a'));
-			$this->assertEquals('一二三四五', \strval($str3));
 			
 		}
 		
