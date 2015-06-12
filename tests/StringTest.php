@@ -270,7 +270,7 @@
 		}
 		
 		public function testPadLeft(){
-			
+			 
 			$str = new String('一二三四五');
 			
 			$str2 = $str->padLeft(5, new String('a'));
