@@ -19,4 +19,4 @@ matrix:
     - php: 7.0
     - php: hhvm
 
-script: phpunit --configuration /tests/configuration.xml
+script: phpunit --configuration configuration.xml --coverage-text
