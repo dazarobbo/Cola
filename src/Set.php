@@ -119,6 +119,10 @@ class Set extends Object implements ISet {
 		\array_values($this->_Storage);
 	}
 	
+	public function random(){
+		return $this->_Storage[\array_rand($this->_Storage, 1)];
+	}
+	
 	public function remove($obj) {
 		
 		foreach($this->_Storage as $key => $item){
@@ -131,6 +135,10 @@ class Set extends Object implements ISet {
 		
 		return $this;
 		
+	}
+	
+	public function reverse(){
+		return static::fromArray(\array_reverse($this->_Storage));
 	}
 		
 	public function some(callable $predicate) {

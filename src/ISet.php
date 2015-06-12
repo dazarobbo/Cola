@@ -19,6 +19,7 @@ interface ISet extends \ArrayAccess, \Countable, IClearable,
 	public function join($str = null);
 	public function map(callable $predicate);
 	public function remove($obj);
+	public function reverse();
 	public function some(callable $predicate);
 	public function sort(callable $compare);
 	public function unique(callable $compare = null);
