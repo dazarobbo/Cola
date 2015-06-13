@@ -64,6 +64,17 @@ abstract class Number {
 	}
 	
 	/**
+	 * Inverts the bits of a number
+	 * @param int $n
+	 * @return int
+	 */
+	public static function invertBits($n){
+		$len = \strlen(\decbin($n));
+		$mask = \str_repeat('1', $len);
+		return $n ^ \base_convert($mask, 2, 10);
+	}
+	
+	/**
 	 * Whether $l is less than or equal to $r
 	 * @param int $l
 	 * @param int $r

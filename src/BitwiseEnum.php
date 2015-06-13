@@ -2,6 +2,8 @@
 
 namespace Cola;
 
+use Cola\Functions\Number;
+
 /**
  * BitwiseEnum
  * Inheriting classes should define constants which are
@@ -72,7 +74,7 @@ abstract class BitwiseEnum extends Enum {
 	 * @return \static
 	 */
 	public function invert(){
-		$this->_Value = ~$this->_Value;
+		$this->_Value = Number::invertBits($this->_Value);
 		return $this;
 	}
 		
