@@ -5,7 +5,7 @@
 		 convertNoticesToExceptions="true"
 		 convertWarningsToExceptions="true"
 		 stopOnFailure="true">
-	
+	 
 	<testsuites>
         <testsuite name="default tests">
             <directory>./tests/</directory>
