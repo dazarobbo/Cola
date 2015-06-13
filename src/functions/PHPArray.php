@@ -3,10 +3,10 @@
 namespace Cola\Functions;
 
 /**
- * _Array
+ * PHPArray
  */
 abstract class PHPArray {
-
+	
 	/**
 	 * Checks whether a given set of keys exist in an array
 	 * @param array $arr The array to search
