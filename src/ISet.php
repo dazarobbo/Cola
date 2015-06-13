@@ -21,7 +21,7 @@ interface ISet extends \ArrayAccess, \Countable, IClearable,
 	public function remove($obj);
 	public function reverse();
 	public function some(callable $predicate);
-	public function sort(callable $compare);
+	public function sort(callable $compare = null);
 	public function unique(callable $compare = null);
 	public function toArray();
 	public function __toString();

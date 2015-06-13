@@ -48,7 +48,8 @@ class Set extends Object implements ISet {
 		$set = new static();
 		
 		foreach($this->_Storage as $key => $item){
-			$set->_Storage[$key] = $deep ? clone $item : $item;
+			$set->_Storage[$key] = $deep && \is_object($item)
+					? clone $item : $item;
 		}
 		
 		return $set;
@@ -80,7 +81,7 @@ class Set extends Object implements ISet {
 	public function jsonSerialize() {
 		return $this->_Storage;
 	}
-
+	
 	public function isEmpty() {
 		return $this->count() === 0;
 	}
@@ -115,8 +116,7 @@ class Set extends Object implements ISet {
 	}
 
 	public function offsetUnset($offset) {
-		unset($this->_Storage[$offset]);
-		\array_values($this->_Storage);
+		\array_splice($this->_Storage, $offset, 1);
 	}
 	
 	public function random(){
@@ -127,11 +127,9 @@ class Set extends Object implements ISet {
 		
 		foreach($this->_Storage as $key => $item){
 			if($item === $obj){
-				unset($this->_Storage[$key]);
+				\array_splice($this->_Storage, $key, 1);
 			}
 		}
-		
-		\array_values($this->_Storage);
 		
 		return $this;
 		
@@ -145,9 +143,19 @@ class Set extends Object implements ISet {
 		return PHPArray::some($this->_Storage, $predicate);		
 	}
 
-	public function sort(callable $compare) {
-		\usort($this->_Storage, $compare);
-		return $this;
+	public function sort(callable $compare = null) {
+		
+		$arr = $this->_Storage;
+		
+		if(\is_callable($compare)){
+			\usort($arr, $compare);
+		}
+		else{
+			\sort($arr);
+		}
+		
+		return static::fromArray($arr);
+		
 	}
 
 	public function toArray() {
@@ -156,23 +164,26 @@ class Set extends Object implements ISet {
 	
 	public function unique(callable $compare = null) {
 		
-		if(\is_callable($compare)){
+		$set;
 		
+		if(\is_callable($compare)){
+			
 			$set = new static();
 			
 			foreach($this->_Storage as $key => $item){
-				if($set->some(function($elem) use ($item, $compare) {
-					return $compare($item, $elem); })){
-						$set->_Storage[$key] = $item;
+				if(!$set->some(function($elem) use ($item, $compare) {
+					return $compare($item, $elem);
+				})){
+					$set->_Storage[$key] = $item;
 				}
 			}
 			
-			$this->_Storage = $set->_Storage;
-			
 		}
 		else{
-			\array_unique($this->_Storage);
+			$set = static::fromArray(\array_unique($this->_Storage));
 		}
+		
+		return $set;
 		
 	}
 
