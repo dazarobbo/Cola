@@ -24,7 +24,12 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Cola\\": "src"
+			"Cola\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Cola\\Tests\\": "tests/"
 		}
 	}
 }
