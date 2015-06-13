@@ -5,7 +5,7 @@ namespace Cola\Functions;
 /**
  * _Array
  */
-class PHPArray {
+abstract class PHPArray {
 
 	/**
 	 * Checks whether a given set of keys exist in an array
