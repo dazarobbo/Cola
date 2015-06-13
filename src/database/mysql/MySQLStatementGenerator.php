@@ -55,10 +55,6 @@ class MySQLStatementGenerator extends \Cola\Database\StatementGenerator {
 				$type->getPrimaryType()->getOwningTable()->getName(),
 				$type->getPrimaryType()->getName());
 	}
-	
-	public function __toString() {
-		return __CLASS__;
-	}
 
 	public function generateTableDefinition(Table $table) {
 		return $this->defineTable($table);

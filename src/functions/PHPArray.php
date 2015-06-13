@@ -89,7 +89,7 @@ class PHPArray {
 	 * @param callable $predicate
 	 * @return boolean
 	 */
-	public static function some(array &$arr, callable $predicate){
+	public static function some(array $arr, callable $predicate){
 		foreach($arr as $k => &$v){
 			if($predicate($v, $k) === true){
 				return true;
