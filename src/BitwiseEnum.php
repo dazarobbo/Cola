@@ -3,6 +3,7 @@
 namespace Cola;
 
 use Cola\Functions\Number;
+use Cola\Functions\PHPArray;
 
 /**
  * BitwiseEnum
@@ -52,7 +53,7 @@ abstract class BitwiseEnum extends Enum {
 	 */
 	public function getNames(){
 		
-		$isSet = Functions\PHPArray::map(static::getConstants(), function($value){
+		$isSet = PHPArray::map(static::getConstants(), function($value){
 			return $this->hasFlag($value);
 		});
 		
