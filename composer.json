@@ -10,6 +10,16 @@
             "email": "dazarobbo@live.com"
 		}
 	],
+	"autoload": {
+		"psr-4": {
+			"Cola\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Cola\\Tests\\": "tests/"
+		}
+	},
 	"require-dev": {
 		"phpunit/phpunit": "4.7.*"
 	},
@@ -21,15 +31,5 @@
 		"ext-mbstring": "*",
 		"ext-pcre": "*",
 		"ext-PDO": "*"
-	},
-	"autoload": {
-		"psr-4": {
-			"Cola\\": "src/"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"Cola\\Tests\\": "tests/"
-		}
 	}
 }
