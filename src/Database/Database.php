@@ -10,7 +10,7 @@ class Database extends \Cola\Object {
 	/**
 	 * The connection to the database
 	 * @access public
-	 * @var PDO
+	 * @var \PDO
 	 */
 	public $Connection = null;
 	
