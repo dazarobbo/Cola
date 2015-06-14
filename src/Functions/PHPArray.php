@@ -148,7 +148,7 @@ abstract class PHPArray {
 	 * @return bool
 	 * @throws InvalidArgumentException
 	 */
-	function last(array $array, $key){
+	public static function last(array $array, $key){
 		\end($array);
 		return \key($array) === $key;
 	}
