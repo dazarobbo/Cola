@@ -30,7 +30,8 @@ class Database extends \Cola\Object {
 	 */
 	public static function connect(ConnectionParameters $config){
 
-		$con = new static();
+		//Not static
+		$con = new self();
 		
 		switch(\strtolower(\trim($config->getDriver()))){
 			
