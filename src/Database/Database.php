@@ -70,8 +70,12 @@ class Database extends \Cola\Object {
 		$this->Connection = null;
 	}
 
-	protected function __construct(ConnectionParameters $params){
-		$this->Connection = static::connect($params)->Connection;
+	protected function __construct(ConnectionParameters $params = null){
+		
+		if($params !== null){
+			$this->Connection = static::connect($params)->Connection;
+		}
+		
 	}
 	
 	public function __destruct() {
