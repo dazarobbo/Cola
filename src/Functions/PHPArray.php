@@ -43,7 +43,7 @@ abstract class PHPArray {
 	 * @param callable $predicate ($value, $key)
 	 * @return array
 	 */
-	public static function map(array $arr, callable $predicate){
+	public static function filter(array $arr, callable $predicate){
 
 		$ret = array();
 
@@ -55,6 +55,25 @@ abstract class PHPArray {
 
 		return $ret;
 
+	}
+	
+	/**
+	 * Traverses an array and generates a new array with the returned values
+	 * which a returned from the predicate function
+	 * @param array $arr
+	 * @param callable $predicate
+	 * @return array
+	 */
+	public static function map(array $arr, callable $predicate){
+		
+		$ret = array();
+		
+		foreach($arr as $k => $v){
+			$ret[$k] = $predicate($v, $k);
+		}
+		
+		return $ret;
+		
 	}
 
 	/**
