@@ -53,7 +53,7 @@ abstract class BitwiseEnum extends Enum {
 	 */
 	public function getNames(){
 		
-		$isSet = PHPArray::map(static::getConstants(), function($value){
+		$isSet = PHPArray::filter(static::getConstants(), function($value){
 			return $this->hasFlag($value);
 		});
 		

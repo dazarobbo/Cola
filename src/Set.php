@@ -61,11 +61,16 @@ class Set extends Object implements ISet {
 	}
 	
 	public function each(callable $action){
-		PHPArray::each($this->_Storage, $action);		
+		PHPArray::each($this->_Storage, $action);
+		return $this;
 	}
 	
 	public function every(callable $predicate) {
 		return PHPArray::every($this->_Storage, $predicate);
+	}
+	
+	public function filter(callable $predicate){
+		return static::fromArray(PHPArray::filter($this->_Storage, $predicate));
 	}
 	
 	public static function fromArray(array $arr) {
@@ -91,9 +96,7 @@ class Set extends Object implements ISet {
 	}
 	
 	public function map(callable $predicate) {
-		$set = new static();
-		$set->_Storage = PHPArray::map($this->_Storage, $predicate);
-		return $set;
+		return static::fromArray(PHPArray::map($this->_Storage, $predicate));
 	}
 
 	public function offsetExists($offset) {

@@ -150,14 +150,25 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		
 	}
 	
-	public function testMap(){
+	public function testFilter(){
 		
 		$set = new Set();
 		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
 		
-		$set2 = $set->map(function($item){ return \is_string($item); });
+		$set2 = $set->filter(function($item){ return \is_string($item); });
 		
 		$this->assertEquals('hello world', $set2->join(' '));
+		
+	}
+	
+	public function testMap(){
+		
+		$set = new Set();
+		$set->add(1, 2, 3);
+		
+		$set2 = $set->map(function($item){ return $item * 10; });
+		
+		$this->assertEquals('10 20 30', $set2->join(' '));
 		
 	}
 	

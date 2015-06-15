@@ -11,6 +11,76 @@ abstract class Number {
 	const COMPARISON_EQUAL = 0;
 	const COMPARISON_GREATER_THAN = 1;
 	
+	public static function add($l, $r){
+		
+		if(\extension_loaded('bcmath')){
+			return \bcadd($l, $r);
+		}
+		
+		return $l + $r;
+		
+	}
+
+	public static function sub($l, $r){
+		
+		if(\extension_loaded('bcmath')){
+			return \bcsub($l, $r);
+		}
+		
+		return $l - $r;
+		
+	}
+	
+	public static function multiply($l, $r){
+		
+		if(\extension_loaded('bcmath')){
+			return \bcmul($l, $r);
+		}
+		
+		return $l * $r;
+		
+	}
+	
+	public static function divide($l, $r){
+		
+		if(\extension_loaded('bcmath')){
+			return \bcdiv($l, $r);
+		}
+		
+		return $l / $r;
+		
+	}
+	
+	public static function pow($l, $r){
+		
+		if(\extension_loaded('bcmath')){
+			return \bcpow($l, $r);
+		}
+		
+		return \pow($l, $r);
+		
+	}
+	
+	public static function mod($l, $r){
+		
+		if(\extension_loaded('bcmath')){
+			return \bcmod($l, $r);
+		}
+		
+		return $l % $r;
+		
+	}
+	
+	public static function sqrt($operand){
+		
+		if(\extension_loaded('bcmath')){
+			return \bcsqrt($operand);
+		}
+		
+		return \sqrt($operand);
+		
+	}
+
 	/**
 	 * Whether a number $n falls in the range between $min and $max
 	 * @param int $n

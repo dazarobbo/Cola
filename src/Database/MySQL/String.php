@@ -41,8 +41,6 @@ class String extends \Cola\Database\DataTypes\StringDataType {
 		
 		$len = \strlen($object);
 		
-		
-		
 		if(Number::between($len, MySQL::getConstant('CHAR_LEN_MIN'),
 				MySQL::getConstant('CHAR_LEN_MAX'))){
 			return new static($len, static::CHAR);

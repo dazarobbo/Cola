@@ -2,10 +2,12 @@
 
 namespace Cola\Database;
 
+use Cola\Object;
+
 /**
  * Table
  */
-class Table extends \Cola\Object implements \JsonSerializable {
+class Table extends Object implements \JsonSerializable {
 
 	/**
 	 * Collection of this table's columns

@@ -2,13 +2,14 @@
 
 namespace Cola\Database;
 
+use Cola\Object;
 use Cola\Database\DataType;
 
 /**
  * Type
  * (aka. database column)
  */
-class Type extends \Cola\Object implements \JsonSerializable {
+class Type extends Object implements \JsonSerializable {
 	
 	/**
 	 * The table this type belongs to

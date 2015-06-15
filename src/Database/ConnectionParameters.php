@@ -93,9 +93,5 @@ class ConnectionParameters extends \Cola\Object implements \ArrayAccess {
 	public function offsetUnset($offset) {
 		unset($this->_Options[$offset]);
 	}
-	
-	public function __toString() {
-		return __CLASS__;
-	}
 
 }

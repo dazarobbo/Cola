@@ -2,10 +2,12 @@
 
 namespace Cola\Database;
 
+use Cola\Set;
+
 /**
  * TableCollection
  */
-class TableCollection extends \Cola\Set {
+class TableCollection extends Set {
 
 	public function __construct() {
 		parent::__construct();

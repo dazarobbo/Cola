@@ -2,10 +2,12 @@
 
 namespace Cola\Database;
 
+use Cola\Set;
+
 /**
  * TypeCollection
  */
-class TypeCollection extends \Cola\Set {
+class TypeCollection extends Set {
 
 	public function __construct() {
 		parent::__construct();
@@ -17,15 +19,15 @@ class TypeCollection extends \Cola\Set {
 	
 	public function &getTypeByName($name){
 		
-		$map = $this->map(function($t) use ($name){
+		$set = $this->filter(function($t) use ($name){
 			return $t->getName() === $name; });
 			
-		if($map->isEmpty()){
+		if($set->isEmpty()){
 			$null = null;
 			return $null;
 		}
 		
-		return $map->_Storage[0];
+		return $set->_Storage[0];
 			
 	}
 	
@@ -34,7 +36,7 @@ class TypeCollection extends \Cola\Set {
 		$coll = new static();
 		
 		$coll->_Storage = $this
-				->map(function($t){
+				->filter(function($t){
 					return $t instanceof PrimaryType ||
 							$t instanceof ForeignType;
 				})
@@ -49,7 +51,7 @@ class TypeCollection extends \Cola\Set {
 		$coll = new static();
 		
 		$coll->_Storage = $this
-				->map(function($t){	return $t instanceof PrimaryType; })
+				->filter(function($t){ return $t instanceof PrimaryType; })
 				->toArray();
 		
 		return $coll;
@@ -61,7 +63,7 @@ class TypeCollection extends \Cola\Set {
 		$coll = new static();
 		
 		$coll->_Storage = $this
-				->map(function($t){	return $t instanceof ForeignType; })
+				->filter(function($t){ return $t instanceof ForeignType; })
 				->toArray();
 		
 		return $coll;
@@ -69,8 +71,7 @@ class TypeCollection extends \Cola\Set {
 	}
 	
 	public function __toString() {
-		return \implode(', ', \array_map(function($t){
-			return $t->__toString(); }, $this->_Storage));
+		return $this->join(', ');
 	}
 
 }
