@@ -23,13 +23,13 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		$set = new Set();
 		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
 		
-		$set->clear(function($item){
+		$set = $set->clear(function($item){
 			return \is_string($item);
 		});
 		
-		$this->assertCount(3, $set);
+		$this->assertCount(2, $set);
 		
-		$set->clear();
+		$set = $set->clear();
 		
 		$this->assertCount(0, $set);
 		
@@ -133,7 +133,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		
 		$this->assertFalse($set->isEmpty());
 		
-		$set->clear();
+		$set = $set->clear();
 		
 		$this->assertTrue($set->isEmpty());
 		
