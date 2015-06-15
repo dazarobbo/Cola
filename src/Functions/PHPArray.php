@@ -164,7 +164,7 @@ abstract class PHPArray {
 	 * @return boolean
 	 */
 	public static function some(array $arr, callable $predicate){
-		foreach($arr as $k => &$v){
+		foreach($arr as $k => $v){
 			if($predicate($v, $k)){
 				return true;
 			}
