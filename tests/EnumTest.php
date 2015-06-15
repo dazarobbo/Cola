@@ -70,7 +70,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 	
 	public function testGetEnumNames(){
 		
-		$daysOfWeek = [
+		$daysOfWeek = array()
 			'SUNDAY',
 			'MONDAY',
 			'TUESDAY',
@@ -78,14 +78,14 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 			'THURSDAY',
 			'FRIDAY',
 			'SATURDAY'
-		];
+		);
 		
-		$beatles = [
+		$beatles = array(
 			'John',
 			'Paul',
 			'George',
 			'Ringo'
-		];
+		);
 		
 		$this->assertTrue($daysOfWeek === Day::getEnumNames());
 		$this->assertFalse($beatles === Day::getEnumNames());
@@ -95,7 +95,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 	public function testGetEnumValues(){
 		
 		$daysOfWeekValues = \range(1, 7, 1);
-		$notValid = [1, 2, 3];
+		$notValid = array(1, 2, 3);
 		
 		$this->assertTrue($daysOfWeekValues === Day::getEnumValues());
 		$this->assertFalse($notValid === Day::getEnumValues());

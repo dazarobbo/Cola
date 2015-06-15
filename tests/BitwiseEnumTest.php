@@ -47,7 +47,7 @@ class BitwiseEnumTest extends \PHPUnit_Framework_TestCase {
 		
 		$acc = new Account(Account::SUPERUSER | Account::ADMIN);
 		
-		$names = ['ADMIN', 'SUPERUSER'];
+		$names = array('ADMIN', 'SUPERUSER');
 		
 		$this->assertTrue($acc->getNames() == $names);
 		

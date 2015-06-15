@@ -190,11 +190,11 @@ class StringTest extends \PHPUnit_Framework_TestCase{
 
 	public function testJoin(){
 
-		$set = Set::fromArray([
+		$set = Set::fromArray(array(
 			'red',
 			'green',
 			'blue'
-		]);
+		));
 
 		$str = String::join($set, new String('一二三四五'));
 

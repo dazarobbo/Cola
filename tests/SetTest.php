@@ -12,7 +12,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testAdd(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
 		$this->assertCount(5, $set);
 		
@@ -21,7 +21,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testClear(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
 		$set = $set->clear(function($item){
 			return \is_string($item);
@@ -38,7 +38,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testContains(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
 		$this->assertTrue($set->contains('world'));
 		$this->assertFalse($set->contains('100'));
@@ -48,7 +48,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testCopy(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
 		//Shallow copy
 		$set2 = $set->copy(false);
@@ -63,7 +63,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testCount(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
 		$this->assertCount(5, $set);
 		
@@ -72,7 +72,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testEach(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
 		$iterations = 0;
 		$set->each(function($item) use(&$iterations){ ++$iterations; });
@@ -86,17 +86,24 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		$set = new Set();
 		$set->add('hello', 'world', 'this', 'is', 'a', 'test');
 		
-		$this->assertTrue($set->every(function($item){ return \is_string($item); }));
+		$this->assertTrue($set->every(function($item){
+			return \is_string($item); }));
 		
 		$set->add(1);
 		
-		$this->assertFalse($set->every(function($item){ return \is_string($item); }));
+		$this->assertFalse($set->every(function($item){
+			return \is_string($item); }));
 		
 	}
 	
 	public function testFromArray(){
 		
-		$set = Set::fromArray(['hello', 'world', 100, function(){}, [3, 2, 1]]);
+		$set = Set::fromArray(array(
+			'hello',
+			'world',
+			100,
+			function(){},
+			array(3, 2, 1)));
 		
 		$this->assertCount(5, $set);
 		
@@ -105,7 +112,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testIteration(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
 		$iterations = 0;
 		
@@ -120,7 +127,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testJson(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
 		$this->assertTrue(\is_string(\json_encode($set)));
 		
@@ -129,7 +136,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testIsEmpty(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
 		$this->assertFalse($set->isEmpty());
 		
@@ -153,7 +160,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testFilter(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
 		$set2 = $set->filter(function($item){ return \is_string($item); });
 		
@@ -175,7 +182,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testArrayAccess(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
 		$this->assertTrue(isset($set[0], $set[4]));
 		$this->assertFalse(isset($set[5]));
@@ -195,7 +202,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testRandom(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
 		$this->assertNotNull($set->random());
 		
@@ -204,7 +211,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testRemove(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
 		$set->remove('world');
 		
@@ -224,10 +231,13 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testSome(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
-		$this->assertTrue($set->some(function($item){ return \is_callable($item); }));
-		$this->assertFalse($set->some(function($item){ return \is_resource($item); }));
+		$this->assertTrue($set->some(function($item){
+			return \is_callable($item); }));
+			
+		$this->assertFalse($set->some(function($item){
+			return \is_resource($item); }));
 		
 	}
 	
@@ -236,7 +246,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		$set = new Set();
 		$set->add('Carol', 'Alice', 'Bob');
 		
-		$exptected = ['Alice', 'Bob', 'Carol'];
+		$exptected = array('Alice', 'Bob', 'Carol');
 		
 		$this->assertTrue($set->sort()->toArray() === $exptected);
 		
@@ -245,7 +255,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testToArray(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, [3, 2, 1]);
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
 		$this->assertTrue(\is_array($set->toArray()));
 		
@@ -259,7 +269,13 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		$expected = 'helloworld!';
 		$this->assertEquals($expected, $set->unique()->join(''));
 		
-		$set = Set::fromArray([ [1, 2, 3], [3], [3, 5, 5], [1], [1, 2] ]);
+		$set = Set::fromArray(array(
+			array(1, 2, 3),
+			array(3),
+			array(3, 5, 5),
+			array(1),
+			array(1, 2)));
+		
 		$newSet = $set->unique(function($a, $b){
 			return \count($a) === \count($b);
 		});
