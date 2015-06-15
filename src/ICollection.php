@@ -10,14 +10,13 @@ interface ICollection extends \ArrayAccess, \Countable, IClearable,
 	
 	public function __construct();
 	public function add($item);
-	public function contains($obj);
 	public function copy($deep = true);
 	public function each(callable $predicate);
 	public function every(callable $predicate);
+	public function filter(callable $predicate);
 	public static function fromArray(array $arr);
 	public function isEmpty();
 	public function map(callable $predicate);
-	public function remove($obj);
 	public function reverse();
 	public function some(callable $predicate);
 	public function sort(callable $compare = null);

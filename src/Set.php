@@ -22,10 +22,13 @@ class Set extends Object implements ICollection {
 	 * @return \Cola\Set
 	 */
 	public function add($item) {
+		
 		foreach(\func_get_args() as $arg){
 			$this->_Storage[] = $arg;
 		}
+		
 		return $this;
+		
 	}
 
 	/**

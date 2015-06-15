@@ -412,7 +412,7 @@ class String extends ReadOnlyArrayAccess implements \Countable,
 	 * @return string
 	 */
 	public function serialize() {
-		return \serialize([$this->_Value, $this->_Encoding]);
+		return \serialize(array($this->_Value, $this->_Encoding));
 	}
 	
 	public function shuffle(){
@@ -571,7 +571,8 @@ class String extends ReadOnlyArrayAccess implements \Countable,
 			return clone $this;
 		}
 		else if($this->length() === 1){
-			return new static(\mb_strtoupper($this->_Value, $this->_Encoding), $this->_Encoding);
+			return new static(\mb_strtoupper($this->_Value, $this->_Encoding),
+					$this->_Encoding);
 		}
 		
 		$str = $this[0]->ucfirst() . $this->substring(1);
