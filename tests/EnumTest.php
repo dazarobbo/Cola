@@ -70,7 +70,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 	
 	public function testGetEnumNames(){
 		
-		$daysOfWeek = array()
+		$daysOfWeek = array(
 			'SUNDAY',
 			'MONDAY',
 			'TUESDAY',
