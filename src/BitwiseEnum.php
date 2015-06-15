@@ -7,6 +7,7 @@ use Cola\Functions\PHPArray;
 
 /**
  * BitwiseEnum
+ * 
  * Inheriting classes should define constants which are
  * mutually exclusive (bit flags)
  */

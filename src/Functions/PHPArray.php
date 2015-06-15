@@ -8,75 +8,6 @@ namespace Cola\Functions;
 abstract class PHPArray {
 	
 	/**
-	 * Checks whether a given set of keys exist in an array
-	 * @param array $arr The array to search
-	 * @return boolean True if all keys exist, otherwise false
-	 */
-	public static function keysExist(array $arr /*, $key1, $key2, etc...*/){
-		
-		for($i = 1, $l = \func_num_args() - 1; $i <= $l; ++$i){
-			if(!\array_key_exists(\func_get_arg($i), $arr)){
-				return false;
-			}
-		}
-		
-		return true;
-		
-	}
-	
-	/**
-	 * Checks whether a given array is an associative
-	 * array (one which has at least 1 element with a string
-	 * as the key)
-	 * @see http://stackoverflow.com/a/4254008/570787
-	 * @param array $a
-	 * @return bool
-	 */
-	public static function isAssociative(array $a){
-		return (bool)\count(\array_filter(\array_keys($a), 'is_string'));
-	}
-	
-	/**
-	 * Traverses an array and generates a new array with the returned values
-	 * which pass the predicate function
-	 * @param array $arr
-	 * @param callable $predicate ($value, $key)
-	 * @return array
-	 */
-	public static function filter(array $arr, callable $predicate){
-
-		$ret = array();
-
-		foreach($arr as $k => $v){
-			if($predicate($v, $k)){
-				$ret[$k] = $v;
-			}
-		}
-
-		return $ret;
-
-	}
-	
-	/**
-	 * Traverses an array and generates a new array with the returned values
-	 * which a returned from the predicate function
-	 * @param array $arr
-	 * @param callable $predicate
-	 * @return array
-	 */
-	public static function map(array $arr, callable $predicate){
-		
-		$ret = array();
-		
-		foreach($arr as $k => $v){
-			$ret[$k] = $predicate($v, $k);
-		}
-		
-		return $ret;
-		
-	}
-
-	/**
 	 * Performs an action for each element in the array
 	 * @param array $arr
 	 * @param callable $action Function with two optional parameters: $v value, $k key
@@ -103,20 +34,26 @@ abstract class PHPArray {
 	}
 
 	/**
-	 * Checks if any element passes a predicate function
+	 * Traverses an array and generates a new array with the returned values
+	 * which pass the predicate function
 	 * @param array $arr
-	 * @param callable $predicate
-	 * @return boolean
+	 * @param callable $predicate ($value, $key)
+	 * @return array
 	 */
-	public static function some(array $arr, callable $predicate){
-		foreach($arr as $k => &$v){
-			if($predicate($v, $k) === true){
-				return true;
+	public static function filter(array $arr, callable $predicate){
+
+		$ret = array();
+
+		foreach($arr as $k => $v){
+			if($predicate($v, $k)){
+				$ret[$k] = $v;
 			}
 		}
-		return false;
-	}
 
+		return $ret;
+
+	}
+	
 	/**
 	 * Checks if an element passes the predicate function
 	 * @param array $arr
@@ -135,7 +72,7 @@ abstract class PHPArray {
 	 */
 	public static function findKey(array $arr, callable $predicate){
 		foreach($arr as $k => &$v){
-			if($predicate($v, $k) === true){
+			if($predicate($v, $k)){
 				return $k;
 			}
 		}
@@ -143,20 +80,31 @@ abstract class PHPArray {
 	}	
 	
 	/**
-	 * Returns the value of the first matching predicate
-	 * @param array $arr
-	 * @param \Cola\Functions\callable $predicate
-	 * @return mixed|null Null is returned if no match was found
+	 * Checks whether a given array is an associative
+	 * array (one which has at least 1 element with a string
+	 * as the key)
+	 * @see http://stackoverflow.com/a/4254008/570787
+	 * @param array $a
+	 * @return bool
 	 */
-	public static function single(array $arr, callable $predicate){
+	public static function isAssociative(array $a){
+		return (bool)\count(\array_filter(\array_keys($a), 'is_string'));
+	}
+	
+	/**
+	 * Checks whether a given set of keys exist in an array
+	 * @param array $arr The array to search
+	 * @return boolean True if all keys exist, otherwise false
+	 */
+	public static function keysExist(array $arr /*, $key1, $key2, etc...*/){
 		
-		foreach($arr as $k => $v){
-			if($predicate($v, $k) === true){
-				return $v;
+		for($i = 1, $l = \func_num_args() - 1; $i <= $l; ++$i){
+			if(!\array_key_exists(\func_get_arg($i), $arr)){
+				return false;
 			}
 		}
 		
-		return null;
+		return true;
 		
 	}
 	
@@ -171,5 +119,57 @@ abstract class PHPArray {
 		\end($array);
 		return \key($array) === $key;
 	}
-	
+
+	/**
+	 * Traverses an array and generates a new array with the returned values
+	 * which a returned from the predicate function
+	 * @param array $arr
+	 * @param callable $predicate
+	 * @return array
+	 */
+	public static function map(array $arr, callable $predicate){
+		
+		$ret = array();
+		
+		foreach($arr as $k => $v){
+			$ret[$k] = $predicate($v, $k);
+		}
+		
+		return $ret;
+		
+	}
+
+	/**
+	 * Returns the value of the first matching predicate
+	 * @param array $arr
+	 * @param \Cola\Functions\callable $predicate
+	 * @return mixed|null Null is returned if no match was found
+	 */
+	public static function single(array $arr, callable $predicate){
+		
+		foreach($arr as $k => $v){
+			if($predicate($v, $k)){
+				return $v;
+			}
+		}
+		
+		return null;
+		
+	}
+
+	/**
+	 * Checks if any element passes a predicate function
+	 * @param array $arr
+	 * @param callable $predicate
+	 * @return boolean
+	 */
+	public static function some(array $arr, callable $predicate){
+		foreach($arr as $k => &$v){
+			if($predicate($v, $k)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

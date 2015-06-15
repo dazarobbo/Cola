@@ -9,7 +9,7 @@ interface IClearable {
 
 	/**
 	 * Remove all items or those specified by the predicate 
-	 * @param \Cola\callable $predicate
+	 * @param callable $predicate
 	 */
 	public function clear(callable $predicate = null);
 

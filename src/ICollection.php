@@ -3,20 +3,19 @@
 namespace Cola;
 
 /**
- * Set
+ * ICollection
  */
-interface ISet extends \ArrayAccess, \Countable, IClearable,
+interface ICollection extends \ArrayAccess, \Countable, IClearable,
 		\JsonSerializable, \IteratorAggregate {
 	
 	public function __construct();
-	public function add();
+	public function add($item);
 	public function contains($obj);
 	public function copy($deep = true);
 	public function each(callable $predicate);
 	public function every(callable $predicate);
 	public static function fromArray(array $arr);
 	public function isEmpty();
-	public function join($str = null);
 	public function map(callable $predicate);
 	public function remove($obj);
 	public function reverse();

@@ -4,6 +4,8 @@ namespace Cola;
 
 /**
  * AbstractReadOnlyArray
+ * 
+ * Base implementation for read only objects
  */
 abstract class ReadOnlyArrayAccess extends Object implements \ArrayAccess {
 

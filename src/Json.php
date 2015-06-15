@@ -24,22 +24,6 @@ abstract class Json {
 	protected static $_LastError = \JSON_ERROR_NONE;
 
 	/**
-	 * Serialises an object to a JSON formatted string
-	 * @param mixed $o
-	 * @return string
-	 */
-	public static function serialise(
-			$o,
-			$options = 0,
-			$depth = self::DEFAULT_OUTPUT_DEPTH){
-		
-		$s = \json_encode($o, $options, $depth);
-		static::$_LastError = \json_last_error();
-		return $s;
-		
-	}
-
-	/**
 	 * Deserialises a JSON formatted string to a PHP object/variable
 	 * @param string $str
 	 * @return mixed
@@ -63,6 +47,22 @@ abstract class Json {
 	 */
 	public static function lastError(){
 		return static::$_LastError;
+	}
+	
+	/**
+	 * Serialises an object to a JSON formatted string
+	 * @param mixed $o
+	 * @return string
+	 */
+	public static function serialise(
+			$o,
+			$options = 0,
+			$depth = self::DEFAULT_OUTPUT_DEPTH){
+		
+		$s = \json_encode($o, $options, $depth);
+		static::$_LastError = \json_last_error();
+		return $s;
+		
 	}
 
 }

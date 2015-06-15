@@ -4,6 +4,8 @@ namespace Cola\Functions;
 
 /**
  * Number
+ * 
+ * Functions to encapsulate bcmath functionality
  */
 abstract class Number {
 
@@ -11,9 +13,22 @@ abstract class Number {
 	const COMPARISON_EQUAL = 0;
 	const COMPARISON_GREATER_THAN = 1;
 	
+	/**
+	 * Cached flag for whether bcmath is loaded
+	 * @var bool
+	 */
+	protected static $_BcMathLoaded = null;
+
+
+	/**
+	 * Addition
+	 * @param string $l
+	 * @param string $r
+	 * @return string
+	 */
 	public static function add($l, $r){
 		
-		if(\extension_loaded('bcmath')){
+		if(static::bcmathLoaded()){
 			return \bcadd($l, $r);
 		}
 		
@@ -21,66 +36,20 @@ abstract class Number {
 		
 	}
 
-	public static function sub($l, $r){
+	/**
+	 * Whether the bcmath extension is loaded
+	 * @return bool
+	 */
+	public static function bcmathLoaded(){
 		
-		if(\extension_loaded('bcmath')){
-			return \bcsub($l, $r);
+		if(static::$_BcMathLoaded === null){
+			static::$_BcMathLoaded = \extension_loaded('bcmath');
 		}
 		
-		return $l - $r;
+		return static::$_BcMathLoaded;
 		
 	}
 	
-	public static function multiply($l, $r){
-		
-		if(\extension_loaded('bcmath')){
-			return \bcmul($l, $r);
-		}
-		
-		return $l * $r;
-		
-	}
-	
-	public static function divide($l, $r){
-		
-		if(\extension_loaded('bcmath')){
-			return \bcdiv($l, $r);
-		}
-		
-		return $l / $r;
-		
-	}
-	
-	public static function pow($l, $r){
-		
-		if(\extension_loaded('bcmath')){
-			return \bcpow($l, $r);
-		}
-		
-		return \pow($l, $r);
-		
-	}
-	
-	public static function mod($l, $r){
-		
-		if(\extension_loaded('bcmath')){
-			return \bcmod($l, $r);
-		}
-		
-		return $l % $r;
-		
-	}
-	
-	public static function sqrt($operand){
-		
-		if(\extension_loaded('bcmath')){
-			return \bcsqrt($operand);
-		}
-		
-		return \sqrt($operand);
-		
-	}
-
 	/**
 	 * Whether a number $n falls in the range between $min and $max
 	 * @param int $n
@@ -102,18 +71,35 @@ abstract class Number {
 	}
 	
 	/**
-	 * Whether $l is less than $r
+	 * Determines whether $l is less than, equal to, or greater than $r
 	 * @param int $l
 	 * @param int $r
-	 * @return bool
+	 * @return COMPARISON_LESS_THAN, COMPARISON_EQUAL, or COMPARISON_GREATER_THAN
 	 */
-	public static function lessThan($l, $r){
+	public static function compare($l, $r){
 		
-		if(\extension_loaded('bcmath')){
-			return \bccomp($l, $r) === static::COMPARISON_LESS_THAN;
+		if(static::bcmathLoaded()){
+			return \bccomp($l, $r);
+		}
+	
+		//http://stackoverflow.com/a/2852669/570787
+		return ($l - $r) ? ($l - $r) / \abs($l - $r) : 0;
+		
+	}
+	
+	/**
+	 * Division
+	 * @param string $l
+	 * @param string $r
+	 * @return string
+	 */
+	public static function divide($l, $r){
+		
+		if(static::bcmathLoaded()){
+			return \bcdiv($l, $r);
 		}
 		
-		return $l < $r;
+		return $l / $r;
 		
 	}
 	
@@ -125,11 +111,27 @@ abstract class Number {
 	 */
 	public static function greaterThan($l, $r){
 		
-		if(\extension_loaded('bcmath')){
+		if(static::bcmathLoaded()){
 			return \bccomp($l, $r) === static::COMPARISON_GREATER_THAN;
 		}
 		
 		return $l > $r;
+		
+	}
+	
+	/**
+	 * Whether $l is greater than or equal to $r
+	 * @param int $l
+	 * @param int $r
+	 * @return bool
+	 */
+	public static function greaterThanOrEqualTo($l, $r){
+		
+		if(static::bcmathLoaded()){
+			return \bccomp($l, $r) >= static::COMPARISON_EQUAL;
+		}
+		
+		return $l >= $r;
 		
 	}
 	
@@ -145,6 +147,22 @@ abstract class Number {
 	}
 	
 	/**
+	 * Whether $l is less than $r
+	 * @param int $l
+	 * @param int $r
+	 * @return bool
+	 */
+	public static function lessThan($l, $r){
+		
+		if(static::bcmathLoaded()){
+			return \bccomp($l, $r) === static::COMPARISON_LESS_THAN;
+		}
+		
+		return $l < $r;
+		
+	}
+	
+	/**
 	 * Whether $l is less than or equal to $r
 	 * @param int $l
 	 * @param int $r
@@ -152,7 +170,7 @@ abstract class Number {
 	 */
 	public static function lessThanOrEqualTo($l, $r){
 		
-		if(\extension_loaded('bcmath')){
+		if(static::bcmathLoaded()){
 			return \bccomp($l, $r) <= static::COMPARISON_EQUAL;
 		}
 		
@@ -161,36 +179,82 @@ abstract class Number {
 	}
 	
 	/**
-	 * Whether $l is greater than or equal to $r
-	 * @param int $l
-	 * @param int $r
-	 * @return bool
+	 * Modulus
+	 * @param string $l
+	 * @param string $r
+	 * @return string
 	 */
-	public static function greaterThanOrEqualTo($l, $r){
+	public static function mod($l, $r){
 		
-		if(\extension_loaded('bcmath')){
-			return \bccomp($l, $r) >= static::COMPARISON_EQUAL;
+		if(static::bcmathLoaded()){
+			return \bcmod($l, $r);
 		}
 		
-		return $l >= $r;
+		return $l % $r;
 		
 	}
 	
 	/**
-	 * Determines whether $l is less than, equal to, or greater than $r
-	 * @param int $l
-	 * @param int $r
-	 * @return COMPARISON_LESS_THAN, COMPARISON_EQUAL, or COMPARISON_GREATER_THAN
+	 * Multiplication
+	 * @param string $l
+	 * @param string $r
+	 * @return string
 	 */
-	public static function compare($l, $r){
+	public static function multiply($l, $r){
 		
-		if(\extension_loaded('bcmath')){
-			return \bccomp($l, $r);
+		if(static::bcmathLoaded()){
+			return \bcmul($l, $r);
 		}
-	
-		//http://stackoverflow.com/a/2852669/570787
-		return ($l - $r) ? ($l - $r) / \abs($l - $r) : 0;
+		
+		return $l * $r;
 		
 	}
 
+	/**
+	 * Raise to the power
+	 * @param string $n
+	 * @param string $power
+	 * @return type
+	 */
+	public static function pow($n, $power){
+		
+		if(static::bcmathLoaded()){
+			return \bcpow($n, $power);
+		}
+		
+		return \pow($l, $r);
+		
+	}
+	
+	/**
+	 * Square root
+	 * @param string $operand
+	 * @return string
+	 */
+	public static function sqrt($operand){
+		
+		if(static::bcmathLoaded()){
+			return \bcsqrt($operand);
+		}
+		
+		return \sqrt($operand);
+		
+	}
+	
+	/**
+	 * Subtraction
+	 * @param string $l
+	 * @param string $r
+	 * @return string
+	 */
+	public static function sub($l, $r){
+		
+		if(static::bcmathLoaded()){
+			return \bcsub($l, $r);
+		}
+		
+		return $l - $r;
+		
+	}
+	
 }

@@ -5,7 +5,7 @@ namespace Cola;
 /**
  * StringIterator
  */
-class StringIterator implements \SeekableIterator {
+class StringIterator extends Object implements \SeekableIterator {
 
 	/**
 	 * @var \Cola\String

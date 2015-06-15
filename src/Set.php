@@ -7,14 +7,14 @@ use Cola\Functions\PHPArray;
 /**
  * Set
  */
-class Set extends Object implements ISet {
+class Set extends Object implements ICollection {
 
-	protected $_Storage = [];
+	protected $_Storage = array();
 	
 	public function __construct() {
 	}
 
-	public function add() {
+	public function add($item) {
 		foreach(\func_get_args() as $arg){
 			$this->_Storage[] = $arg;
 		}
@@ -23,19 +23,16 @@ class Set extends Object implements ISet {
 
 	public function clear(callable $predicate = null) {
 		
+		$arr = $this->_Storage;
+		
 		if(\is_callable($predicate)){
-			foreach($this->_Storage as $key => $value){
-				if($predicate($value, $key)){
-					unset($this->_Storage[$key]);
-				}
-			}
-			\array_values($this->_Storage);
+			$arr = PHPArray::filter($arr, $predicate);
 		}
 		else{
-			$this->_Storage = [];
+			$arr = array();
 		}
 		
-		return $this;
+		return static::fromArray($arr);
 		
 	}
 
@@ -91,8 +88,8 @@ class Set extends Object implements ISet {
 		return $this->count() === 0;
 	}
 
-	public function join($str = null){
-		return \implode($str ? $str : '', $this->_Storage);
+	public function join($str = String::NONE){
+		return \implode($str, $this->_Storage);
 	}
 	
 	public function map(callable $predicate) {
@@ -126,6 +123,12 @@ class Set extends Object implements ISet {
 		return $this->_Storage[\array_rand($this->_Storage, 1)];
 	}
 	
+	/**
+	 * 
+	 * @param type $obj
+	 * @return \Cola\Set
+	 * @deprecated use filter instead
+	 */
 	public function remove($obj) {
 		
 		foreach($this->_Storage as $key => $item){

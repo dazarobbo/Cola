@@ -5,9 +5,9 @@ namespace Cola;
 /**
  * Object
  */
-class Object {
+abstract class Object{
 
-	public function __toString() {
+	public function __toString(){
 		return \get_called_class();
 	}
 
