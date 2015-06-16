@@ -397,6 +397,25 @@ class String extends ReadOnlyArrayAccess implements \Countable,
 	}
 
 	/**
+	 * Checks for string equality in constant time
+	 * @param self $str
+	 * @return bool
+	 */
+	public function slowEquals(self $str){
+		
+		$l1 = \strlen($this->_Value);
+		$l2 = \strlen($str->_Value);
+		$diff = $l1 ^ $l2;
+		
+		for($i = 0; $i < $l1 && $i < $l2; ++$i){
+			$diff |= \ord($this->_Value[$i]) ^ \ord($str->_Encoding[$i]);
+		}
+		
+		return $diff === 0;
+		
+	}
+	
+	/**
 	 * Returns a new string as a substring from the current one
 	 * @param int $start where to start extracting
 	 * @param int $length how many characters to extract
