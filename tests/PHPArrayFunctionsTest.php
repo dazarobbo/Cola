@@ -4,6 +4,8 @@ namespace Cola\Tests;
 
 use Cola\Functions\PHPArray;
 
+exit();
+
 /**
  * ArrayFunctionsTest
  */

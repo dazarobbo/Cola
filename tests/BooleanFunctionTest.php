@@ -4,6 +4,8 @@ namespace Cola\Tests;
 
 use Cola\Functions\Boolean;
 
+exit();
+
 /**
  * BooleanFunctionTest
  */
