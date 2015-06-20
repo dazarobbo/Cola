@@ -17,9 +17,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		$this->assertCount(5, $set);
 		
 	}
-	
-	///
-	
+
 	public function testClear(){
 		
 		$set = new Set();
@@ -37,7 +35,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		
 	}
 	
-	/*
+	///
 	
 	public function testContains(){
 		
@@ -48,6 +46,8 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse($set->contains('100'));
 		
 	}
+	
+	/*
 	
 	public function testCopy(){
 		
