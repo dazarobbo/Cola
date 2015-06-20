@@ -15,6 +15,8 @@ class Day extends Enum{
 	const SATURDAY = 7;
 }
 
+echo '3';
+
 /**
  * EnumTest
  */

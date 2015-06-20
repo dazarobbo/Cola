@@ -4,6 +4,8 @@ namespace Cola\Tests;
 
 use Cola\Functions\Object;
 
+echo '6';
+
 /**
  * ObjectFunctionsTest
  */

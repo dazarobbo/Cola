@@ -5,6 +5,8 @@ namespace Cola\Tests;
 use Cola\MString;
 use Cola\Set;
 
+echo '4';
+
 class MStringTest extends \PHPUnit_Framework_TestCase{
 
 	public function testCodeUnit(){

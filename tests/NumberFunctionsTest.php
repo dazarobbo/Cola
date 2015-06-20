@@ -4,6 +4,8 @@ namespace Cola\Tests;
 
 use Cola\Functions\Number;
 
+echo '5';
+
 /**
  * NumberFunctionsTest
  */

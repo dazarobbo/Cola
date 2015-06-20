@@ -4,6 +4,8 @@ namespace Cola\Tests;
 
 use Cola\Functions\Boolean;
 
+echo '2';
+
 /**
  * BooleanFunctionTest
  */

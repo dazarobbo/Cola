@@ -11,6 +11,8 @@ class Account extends BitwiseEnum{
 	const SUPERUSER = 8;
 }
 
+echo '1';
+
 /**
  * BitwiseEnumTest
  */
