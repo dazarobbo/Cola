@@ -9,8 +9,8 @@ interface IClearable {
 
 	/**
 	 * Remove all items or those specified by the predicate 
-	 * @param callable $predicate
+	 * @param \Closure $predicate
 	 */
-	public function clear(callable $predicate = null);
+	public function clear(\Closure $predicate = null);
 
 }

@@ -33,10 +33,10 @@ class Set extends Object implements ICollection {
 	/**
 	 * Clears all items or those not matching a predicate
 	 * function.
-	 * @param \Cola\callable $predicate optional
+	 * @param \Closure $predicate optional
 	 * @return \static
 	 */
-	public function clear(callable $predicate = null) {
+	public function clear(\Closure $predicate = null) {
 		
 		$arr = $this->_Storage;
 		
@@ -99,29 +99,29 @@ class Set extends Object implements ICollection {
 	
 	/**
 	 * Executes an action function for each element
-	 * @param callable $action
+	 * @param \Closure $action
 	 * @return \Cola\Set
 	 */
-	public function each(callable $action){
+	public function each(\Closure $action){
 		PHPArray::each($this->_Storage, $action);
 		return $this;
 	}
 	
 	/**
 	 * Checks whether each element passes a predicate function
-	 * @param callable $predicate
+	 * @param \Closure $predicate
 	 * @return bool
 	 */
-	public function every(callable $predicate) {
+	public function every(\Closure $predicate) {
 		return PHPArray::every($this->_Storage, $predicate);
 	}
 	
 	/**
 	 * Returns a new Set with elements which pass a predicate function
-	 * @param callable $predicate
+	 * @param \Closure $predicate
 	 * @return \static
 	 */
-	public function filter(callable $predicate){
+	public function filter(\Closure $predicate){
 		return static::fromArray(PHPArray::filter($this->_Storage, $predicate));
 	}
 	
@@ -168,10 +168,10 @@ class Set extends Object implements ICollection {
 	/**
 	 * Returns a new set with elements returned from the callback
 	 * function.
-	 * @param callable $predicate
+	 * @param \Closure $predicate
 	 * @return \static
 	 */
-	public function map(callable $predicate) {
+	public function map(\Closure $predicate) {
 		return static::fromArray(PHPArray::map($this->_Storage, $predicate));
 	}
 
@@ -234,20 +234,20 @@ class Set extends Object implements ICollection {
 	
 	/**
 	 * Whether any element matches the given predicate function
-	 * @param callable $predicate
+	 * @param \Closure $predicate
 	 * @return bool
 	 */
-	public function some(callable $predicate) {
+	public function some(\Closure $predicate) {
 		return PHPArray::some($this->_Storage, $predicate);		
 	}
 	
 	/**
 	 * Sorts the elements of this Set according to a default sort
 	 * option or a given compare function.
-	 * @param callable $compare optional compare funciton
+	 * @param \Closure $compare optional compare funciton
 	 * @return \static
 	 */
-	public function sort(callable $compare = null) {
+	public function sort(\Closure $compare = null) {
 		
 		$arr = $this->_Storage;
 		
@@ -272,10 +272,10 @@ class Set extends Object implements ICollection {
 	
 	/**
 	 * Returns a new Set with duplicates removed
-	 * @param callable $compare optional compare function
+	 * @param \Closure $compare optional compare function
 	 * @return \static
 	 */
-	public function unique(callable $compare = null) {
+	public function unique(\Closure $compare = null) {
 		
 		$set = null;
 		
