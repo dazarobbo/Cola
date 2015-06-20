@@ -4,8 +4,6 @@ namespace Cola\Tests;
 
 use Cola\Functions\Number;
 
-exit();
-
 /**
  * NumberFunctionsTest
  */
