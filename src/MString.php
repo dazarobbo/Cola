@@ -6,14 +6,14 @@ use Cola\StringIterator;
 use Cola\StringComparison;
 
 /**
- * String
+ * MString
  * 
  * An immutable string class.
  * 
- * $str = new String('一二三四五');
+ * $str = new MString('一二三四五');
  * echo $str->substring(1, 3); //二三四
  */
-class String extends ReadOnlyArrayAccess implements \Countable,
+class MString extends ReadOnlyArrayAccess implements \Countable,
 		\JsonSerializable, \Serializable, IComparable,
 		\IteratorAggregate {
 

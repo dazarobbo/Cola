@@ -8,7 +8,7 @@ namespace Cola;
 class StringIterator extends Object implements \SeekableIterator {
 
 	/**
-	 * @var \Cola\String
+	 * @var MString
 	 */
 	protected $_Str;
 	
@@ -18,7 +18,7 @@ class StringIterator extends Object implements \SeekableIterator {
 	protected $_Position = 0;
 
 	
-	public function __construct(\Cola\String $str) {
+	public function __construct(MString $str) {
 		$this->_Str = $str;
 	}
 
