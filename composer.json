@@ -1,6 +1,5 @@
 {
     "name": "dazarobbo/cola",
-	"version": "1.0.0",
     "description": "Common functions and objects",
 	"license": "MIT",
 	"type": "package",
@@ -24,12 +23,6 @@
 		"phpunit/phpunit": "4.7.*"
 	},
     "require": {
-		"php": ">=5.4.0",
-		"ext-bcmath": "*",
-		"ext-intl": "*",
-		"ext-json": "*",
-		"ext-mbstring": "*",
-		"ext-pcre": "*",
-		"ext-PDO": "*"
+		"php": ">=5.4.0"
 	}
 }
