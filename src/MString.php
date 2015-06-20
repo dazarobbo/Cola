@@ -480,7 +480,7 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 */
 	public function toCharArray(){
 		
-		$arr = [];
+		$arr = array();
 		
 		for($i = 0, $l = $this->length(); $i < $l; ++$i){
 			$arr[] = \mb_substr($this->_Value, $i, 1, $this->_Encoding);
