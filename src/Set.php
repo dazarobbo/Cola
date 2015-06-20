@@ -73,9 +73,8 @@ class Set extends Object implements ICollection {
 			
 			if($deep && \is_object($item)){
 				
-				//Workaround for HHVM failing to clone a function
-				if(\is_callable($item) && \defined('HHVM_VERSION')){
-					$set[$key] = $item;
+				if(\is_callable($item)){
+					$set[$key] = \Closure::bind($item, null);
 				}
 				else{
 					$set[$key] = clone $item;
