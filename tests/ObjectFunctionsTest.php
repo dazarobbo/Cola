@@ -4,13 +4,15 @@ namespace Cola\Tests;
 
 use Cola\Functions\Object;
 
-echo '6';
-
 /**
  * ObjectFunctionsTest
  */
 class ObjectFunctionsTest extends \PHPUnit_Framework_TestCase {
 
+	protected function setUp() {
+		echo 'Running ' . __CLASS__ . \PHP_EOL;
+	}
+	
 	public function testPropertiesExist(){
 		
 		$o = new \stdClass();

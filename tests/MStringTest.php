@@ -5,10 +5,12 @@ namespace Cola\Tests;
 use Cola\MString;
 use Cola\Set;
 
-echo '4';
-
 class MStringTest extends \PHPUnit_Framework_TestCase{
 
+	protected function setUp() {
+		echo 'Running ' . __CLASS__ . \PHP_EOL;
+	}
+	
 	public function testCodeUnit(){
 		$str = new MString('一二三四五');
 		$this->assertEquals(19968, $str[0]->codeUnit());

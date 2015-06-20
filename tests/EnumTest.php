@@ -15,13 +15,15 @@ class Day extends Enum{
 	const SATURDAY = 7;
 }
 
-echo '3';
-
 /**
  * EnumTest
  */
 class EnumTest extends \PHPUnit_Framework_TestCase {
 
+	protected function setUp() {
+		echo 'Running ' . __CLASS__ . \PHP_EOL;
+	}
+	
 	public function testCreation(){
 		
 		$day = new Day(Day::TUESDAY);

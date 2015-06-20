@@ -4,13 +4,15 @@ namespace Cola\Tests;
 
 use Cola\Set;
 
-echo '8';
-
 /**
  * SetTest
  */
 class SetTest extends \PHPUnit_Framework_TestCase {
 
+	protected function setUp() {
+		echo 'Running ' . __CLASS__ . \PHP_EOL;
+	}
+	
 	public function testAdd(){
 		
 		$set = new Set();

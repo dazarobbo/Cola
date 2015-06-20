@@ -4,13 +4,15 @@ namespace Cola\Tests;
 
 use Cola\Functions\PHPArray;
 
-echo '7';
-
 /**
  * ArrayFunctionsTest
  */
 class PHPArrayFunctionsTest extends \PHPUnit_Framework_TestCase {
 
+	protected function setUp() {
+		echo 'Running ' . __CLASS__ . \PHP_EOL;
+	}
+	
 	public function testEach(){
 		
 		$arr = array(3, 2, 1);

@@ -4,13 +4,15 @@ namespace Cola\Tests;
 
 use Cola\Functions\Number;
 
-echo '5';
-
 /**
  * NumberFunctionsTest
  */
 class NumberFunctionsTest extends \PHPUnit_Framework_TestCase {
 
+	protected function setUp() {
+		echo 'Running ' . __CLASS__ . \PHP_EOL;
+	}
+	
 	public function testAdd(){
 		
 		$this->assertEquals('34765017345073624875342346', 
