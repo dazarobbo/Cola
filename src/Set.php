@@ -74,7 +74,14 @@ class Set extends Object implements ICollection {
 			if($deep && \is_object($item)){
 				
 				if(\is_callable($item)){
-					$set[$key] = \Closure::bind($item, null);
+					
+					if(\PHP_MAJOR_VERSION === 5 && \PHP_MINOR_VERSION === 3){
+						$set[$key] = clone $item;
+					}
+					else{
+						$set[$key] = \Closure::bind($item, null);
+					}
+					
 				}
 				else{
 					$set[$key] = clone $item;
