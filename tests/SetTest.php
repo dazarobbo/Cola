@@ -35,8 +35,6 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		
 	}
 	
-	///
-	
 	public function testContains(){
 		
 		$set = new Set();
@@ -47,8 +45,8 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		
 	}
 	
-	/*
-	
+	//
+
 	public function testCopy(){
 		
 		$set = new Set();
@@ -63,6 +61,8 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse($set[3] === $set3[3]);
 		
 	}
+	
+	/*
 	
 	public function testCount(){
 		
