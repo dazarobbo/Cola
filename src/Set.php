@@ -70,8 +70,14 @@ class Set extends Object implements ICollection {
 		$set = new static();
 		
 		foreach($this->_Storage as $key => $item){
-			$set->_Storage[$key] = $deep && \is_object($item)
-					? clone $item : $item;
+			
+			if($deep && \is_object($item)){
+				$set[$key] = clone $item;
+			}
+			else{
+				$set[$key] = $item;
+			}
+			
 		}
 		
 		return $set;
