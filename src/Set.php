@@ -268,7 +268,7 @@ class Set extends Object implements ICollection {
 	 */
 	public function unique(callable $compare = null) {
 		
-		$set;
+		$set = null;
 		
 		if(\is_callable($compare)){
 			
