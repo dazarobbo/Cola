@@ -16,10 +16,6 @@ class Account extends BitwiseEnum{
  */
 class BitwiseEnumTest extends \PHPUnit_Framework_TestCase {
 
-	protected function setUp() {
-		echo 'Running ' . __CLASS__ . \PHP_EOL;
-	}
-	
 	public function testCreation(){
 		
 		$acc = new Account(Account::USER);

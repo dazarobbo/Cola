@@ -13,7 +13,6 @@ class Set extends Object implements ICollection {
 	
 	
 	public function __construct(){
-		
 	}
 
 	/**
@@ -152,7 +151,7 @@ class Set extends Object implements ICollection {
 	 * @param string $str optional separator
 	 * @return string
 	 */
-	public function join($str = String::NONE){
+	public function join($str = MString::NONE){
 		return \implode($str, $this->_Storage);
 	}
 	
