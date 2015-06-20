@@ -50,11 +50,12 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 	public function testCopy(){
 		
 		$set = new Set();
-		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
+		//$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
+		$set->add('hello', 'world', 100, array(3, 2, 1));
 		
 		//Shallow copy
 		$set2 = $set->copy(false);
-		$this->assertTrue($set[3] === $set2[3]);
+		$this->assertTrue($set[1] === $set2[1]);
 		
 		//Deep copy
 		$set3 = $set->copy();
