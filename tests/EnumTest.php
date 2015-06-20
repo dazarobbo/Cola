@@ -5,8 +5,6 @@ namespace Cola\Tests;
 use Cola\Enum;
 use Cola\Functions\Number;
 
-exit();
-
 class Day extends Enum{
 	const SUNDAY = 1;
 	const MONDAY = 2;
