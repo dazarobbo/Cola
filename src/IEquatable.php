@@ -12,6 +12,6 @@ interface IEquatable {
 	 * @param mixed $obj
 	 * @return bool
 	 */
-	public function equals($obj);
+	public function equals(self $obj);
 
 }
