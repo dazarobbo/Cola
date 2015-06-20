@@ -52,11 +52,11 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		$set = new Set();
 		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
-		/*
-		
 		//Shallow copy
 		$set2 = $set->copy(false);
 		$this->assertTrue($set[3] === $set2[3]);
+		
+		/*
 		
 		//Deep copy
 		$set3 = $set->copy();
