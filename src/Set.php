@@ -72,20 +72,10 @@ class Set extends Object implements ICollection {
 		foreach($this->_Storage as $key => $item){
 			
 			if($deep && \is_object($item)){
-				
-				if(\is_callable($item)){
-					
-					if(\PHP_MAJOR_VERSION === 5 && \PHP_MINOR_VERSION === 3){
-						$set[$key] = clone $item;
-					}
-					else{
-						$set[$key] = \Closure::bind($item, null);
-					}
-					
-				}
-				else{
-					$set[$key] = clone $item;
-				}
+			
+				$set[$key] = \is_callable($item)
+						? \Closure::bind($item, null)
+						: clone $item;
 				
 			}
 			else{
