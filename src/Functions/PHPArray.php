@@ -10,9 +10,9 @@ abstract class PHPArray {
 	/**
 	 * Performs an action for each element in the array
 	 * @param array $arr
-	 * @param \Closure $action Function with two optional parameters: $v value, $k key
+	 * @param callable $action Function with two optional parameters: $v value, $k key
 	 */
-	public static function each(array $arr, \Closure $action){
+	public static function each(array $arr, callable $action){
 		foreach($arr as $k => $v){
 			$action($v, $k);
 		}
@@ -21,10 +21,10 @@ abstract class PHPArray {
 	/**
 	 * Checks if all elements in the array pass a predicate function
 	 * @param array $arr
-	 * @param \Closure $predicate
+	 * @param callable $predicate
 	 * @return boolean
 	 */
-	public static function every(array $arr, \Closure $predicate){
+	public static function every(array $arr, callable $predicate){
 		foreach($arr as $k => $v){
 			if($predicate($v, $k) !== true){
 				return false;
@@ -37,10 +37,10 @@ abstract class PHPArray {
 	 * Traverses an array and generates a new array with the returned values
 	 * which pass the predicate function
 	 * @param array $arr
-	 * @param \Closure $predicate ($value, $key)
+	 * @param callable $predicate ($value, $key)
 	 * @return array
 	 */
-	public static function filter(array $arr, \Closure $predicate){
+	public static function filter(array $arr, callable $predicate){
 
 		$ret = array();
 
@@ -57,20 +57,20 @@ abstract class PHPArray {
 	/**
 	 * Checks if an element passes the predicate function
 	 * @param array $arr
-	 * @param \Closure $predicate
+	 * @param callable $predicate
 	 * @return boolean
 	 */
-	public static function find(array $arr, \Closure $predicate){
+	public static function find(array $arr, callable $predicate){
 		return static::some($arr, $predicate);
 	}
 
 	/**
 	 * Returns the key for the element which passes the given predicate function
 	 * @param array $arr
-	 * @param \Closure $predicate
+	 * @param callable $predicate
 	 * @return mixed|null Null is returned if no match was found
 	 */
-	public static function findKey(array $arr, \Closure $predicate){
+	public static function findKey(array $arr, callable $predicate){
 		foreach($arr as $k => &$v){
 			if($predicate($v, $k)){
 				return $k;
@@ -124,10 +124,10 @@ abstract class PHPArray {
 	 * Traverses an array and generates a new array with the returned values
 	 * which a returned from the predicate function
 	 * @param array $arr
-	 * @param \Closure $predicate
+	 * @param callable $predicate
 	 * @return array
 	 */
-	public static function map(array $arr, \Closure $predicate){
+	public static function map(array $arr, callable $predicate){
 		
 		$ret = array();
 		
@@ -142,10 +142,10 @@ abstract class PHPArray {
 	/**
 	 * Returns the value of the first matching predicate
 	 * @param array $arr
-	 * @param \Closure $predicate
+	 * @param callable $predicate
 	 * @return mixed|null Null is returned if no match was found
 	 */
-	public static function single(array $arr, \Closure $predicate){
+	public static function single(array $arr, callable $predicate){
 		
 		foreach($arr as $k => $v){
 			if($predicate($v, $k)){
@@ -160,10 +160,10 @@ abstract class PHPArray {
 	/**
 	 * Checks if any element passes a predicate function
 	 * @param array $arr
-	 * @param \Closure $predicate
+	 * @param callable $predicate
 	 * @return boolean
 	 */
-	public static function some(array $arr, \Closure $predicate){
+	public static function some(array $arr, callable $predicate){
 		foreach($arr as $k => $v){
 			if($predicate($v, $k)){
 				return true;
