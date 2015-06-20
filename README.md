@@ -9,3 +9,7 @@
 * mbstring
 * pcre
 * PDO
+
+```bash
+composer.phar require dazarobbo/cola
+```
