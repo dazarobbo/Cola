@@ -2,7 +2,7 @@
 
 namespace Cola;
 
-use Cola\StringIterator;
+use Cola\MStringIterator;
 use Cola\StringComparison;
 
 /**
@@ -217,7 +217,7 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	}
 	
 	public function getIterator() {
-		return new StringIterator($this);
+		return new MStringIterator($this);
 	}
 
 	/**
