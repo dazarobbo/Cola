@@ -17,7 +17,7 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		$this->assertCount(5, $set);
 		
 	}
-
+	
 	public function testClear(){
 		
 		$set = new Set();
@@ -45,25 +45,20 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		
 	}
 	
-	//
-
 	public function testCopy(){
 		
 		$set = new Set();
-		//$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
-		$set->add('hello', 'world', 100, array(3, 2, 1));
+		$set->add('hello', 'world', 100, function(){}, array(3, 2, 1));
 		
 		//Shallow copy
 		$set2 = $set->copy(false);
-		$this->assertTrue($set[1] === $set2[1]);
+		$this->assertTrue($set[3] === $set2[3]);
 		
 		//Deep copy
 		$set3 = $set->copy();
-		//$this->assertFalse($set[3] === $set3[3]);
+		$this->assertFalse($set[3] === $set3[3]);
 		
 	}
-	
-	/*
 	
 	public function testCount(){
 		
@@ -288,6 +283,5 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		$this->assertCount(3, $newSet);
 		
 	}
-	*/
 
 }
