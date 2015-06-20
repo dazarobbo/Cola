@@ -72,7 +72,15 @@ class Set extends Object implements ICollection {
 		foreach($this->_Storage as $key => $item){
 			
 			if($deep && \is_object($item)){
-				$set[$key] = clone $item;
+				
+				//Workaround for HHVM failing to clone a function
+				if(\is_callable($item) && \defined('HHVM_VERSION')){
+					$set[$key] = $item;
+				}
+				else{
+					$set[$key] = clone $item;
+				}
+				
 			}
 			else{
 				$set[$key] = $item;
