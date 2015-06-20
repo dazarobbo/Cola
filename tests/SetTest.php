@@ -18,7 +18,9 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		
 	}
 	
-	/*
+	///
+	
+	
 	public function testClear(){
 		
 		$set = new Set();
@@ -69,6 +71,8 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		$this->assertCount(5, $set);
 		
 	}
+	
+	/*
 	
 	public function testEach(){
 		
