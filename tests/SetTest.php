@@ -56,13 +56,9 @@ class SetTest extends \PHPUnit_Framework_TestCase {
 		$set2 = $set->copy(false);
 		$this->assertTrue($set[3] === $set2[3]);
 		
-		/*
-		
 		//Deep copy
 		$set3 = $set->copy();
-		$this->assertFalse($set[3] === $set3[3]);
-		 * 
-		 */
+		//$this->assertFalse($set[3] === $set3[3]);
 		
 	}
 	
