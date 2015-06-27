@@ -8,7 +8,7 @@ use Cola\Functions\PHPArray;
  * ArrayFunctionsTest
  */
 class PHPArrayFunctionsTest extends \PHPUnit_Framework_TestCase {
-
+	
 	public function testEach(){
 		
 		$arr = array(3, 2, 1);

@@ -14,7 +14,7 @@ use Cola\StringComparison;
  * echo $str->substring(1, 3); //二三四
  */
 class MString extends ReadOnlyArrayAccess implements \Countable,
-		\JsonSerializable, \Serializable, IComparable,
+		\JsonSerializable, \Serializable, IComparable, IEquatable,
 		\IteratorAggregate {
 
 	/**
@@ -183,6 +183,22 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	}
 	
 	/**
+	 * Whether this string is equal to another
+	 * @param static $obj
+	 * @return bool
+	 * @throws \RuntimeException
+	 */
+	public function equals($obj) {
+		
+		if(!($obj instanceof static)){
+			throw new \RuntimeException('$obj is not a comparable instance');
+		}
+		
+		return $this->_Value === $obj->_Value;
+		
+	}
+	
+	/**
 	 * Converts a code unit to a unicode character in UTF-8 encoding
 	 * @param int $unit
 	 * @return \static
@@ -278,12 +294,12 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	
 	/**
 	 * Returns a new string with all elements of $set joined by $str
-	 * @param Set $set
+	 * @param array $arr
 	 * @param self $str
 	 * @return \static
 	 */
-	public static function join(Set $set, self $str){
-		return new static(\implode($str->_Value, $set->toArray()), $str->_Encoding);
+	public static function join(array $arr, self $str){
+		return new static(\implode($str->_Value, $arr), $str->_Encoding);
 	}
 	
 	/**
@@ -449,10 +465,10 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 * Splits this string according to a regular expression
 	 * @param string $regex optional default is to split all characters
 	 * @param int $limit limit number of splits, default is -1 (no limit)
-	 * @return Set Cola\Set of string (not Cola\String)
+	 * @return string[]
 	 */
 	public function split($regex = '//u', $limit = -1){
-		return Set::fromArray(\preg_split($regex, $this->_Value, $limit, \PREG_SPLIT_NO_EMPTY));		
+		return \preg_split($regex, $this->_Value, $limit, \PREG_SPLIT_NO_EMPTY);
 	}
 	
 	/**
@@ -516,16 +532,16 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	
 	/**
 	 * Trims whitespace or a set of characters from both ends of this string
-	 * @param \Cola\Set $chars optional
+	 * @param array $chars optional
 	 * @return \static
 	 */
-	public function trim(Set $chars = null){
+	public function trim(array $chars = null){
 		
 		if($chars === null){
 			return new static(\trim($this->_Value), $this->_Encoding);
 		}
 	
-		$chars = \preg_quote(\implode(static::NONE, $chars->toArray()));
+		$chars = \preg_quote(\implode(static::NONE, $chars));
 		
 		$str = \preg_replace(
 				\sprintf('/(^[%s]+)|([%s]+$)/us', $chars, $chars),
@@ -538,16 +554,16 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	
 	/**
 	 * Trims whitespace or a set of characters from the end of this string
-	 * @param \Cola\Set $chars optional
+	 * @param array $chars optional
 	 * @return \static
 	 */
-	public function trimEnd(Set $chars = null){
+	public function trimEnd(array $chars = null){
 		
 		if($chars === null){
 			return new static(\rtrim($this->_Value), $this->_Encoding);
 		}
 		
-		$chars = \preg_quote(\implode(static::NONE, $chars->toArray()));
+		$chars = \preg_quote(\implode(static::NONE, $chars));
 		
 		$str = \preg_replace(
 				\sprintf('/[%s]+$/us', $chars),
@@ -560,16 +576,16 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	
 	/**
 	 * Trims whitespace or a set of characters from the beginning of this string
-	 * @param \Cola\Set $chars optional
+	 * @param array $chars optional
 	 * @return \static
 	 */
-	public function trimStart(Set $chars = null){
+	public function trimStart(array $chars = null){
 		
 		if($chars === null){
 			return new static(\ltrim($this->_Value), $this->_Encoding);
 		}
 		
-		$chars = \preg_quote(\implode(static::NONE, $chars->toArray()));
+		$chars = \preg_quote(\implode(static::NONE, $chars));
 		
 		$str = \preg_replace(
 				\sprintf('/^[%s]+/us', $chars),

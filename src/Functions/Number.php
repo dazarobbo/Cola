@@ -18,8 +18,9 @@ abstract class Number {
 	 * @var bool
 	 */
 	protected static $_BcMathLoaded = null;
-
-
+	
+	
+	
 	/**
 	 * Addition
 	 * @param string $l
@@ -141,9 +142,9 @@ abstract class Number {
 	 * @return int
 	 */
 	public static function invertBits($n){
-		$len = \strlen(\decbin($n));
-		$mask = \str_repeat('1', $len);
-		return $n ^ \base_convert($mask, 2, 10);
+		$bits = \floor(\log($n, 2)) + 1;
+		$mask = (1 << $bits) - 1;
+		return $n ^ $mask;
 	}
 	
 	/**
@@ -222,7 +223,7 @@ abstract class Number {
 			return \bcpow($n, $power);
 		}
 		
-		return \pow($l, $r);
+		return \pow($n, $power);
 		
 	}
 	
@@ -239,6 +240,10 @@ abstract class Number {
 		
 		return \sqrt($operand);
 		
+	}
+	
+	public static function setScale($scale){
+		\bcscale($scale);
 	}
 	
 	/**

@@ -8,9 +8,8 @@ namespace Cola;
 interface IClearable {
 
 	/**
-	 * Remove all items or those specified by the predicate 
-	 * @param \Closure $predicate
+	 * Remove all items
 	 */
-	public function clear(\Closure $predicate = null);
+	public function clear();
 
 }

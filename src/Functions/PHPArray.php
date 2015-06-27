@@ -12,7 +12,7 @@ abstract class PHPArray {
 	 * @param array $arr
 	 * @param callable $action Function with two optional parameters: $v value, $k key
 	 */
-	public static function each(array $arr, callable $action){
+	public static function each(array $arr, \Closure $action){
 		foreach($arr as $k => $v){
 			$action($v, $k);
 		}
@@ -24,7 +24,7 @@ abstract class PHPArray {
 	 * @param callable $predicate
 	 * @return boolean
 	 */
-	public static function every(array $arr, callable $predicate){
+	public static function every(array $arr, \Closure $predicate){
 		foreach($arr as $k => $v){
 			if($predicate($v, $k) !== true){
 				return false;
@@ -40,7 +40,7 @@ abstract class PHPArray {
 	 * @param callable $predicate ($value, $key)
 	 * @return array
 	 */
-	public static function filter(array $arr, callable $predicate){
+	public static function filter(array $arr, \Closure $predicate){
 
 		$ret = array();
 
@@ -60,7 +60,7 @@ abstract class PHPArray {
 	 * @param callable $predicate
 	 * @return boolean
 	 */
-	public static function find(array $arr, callable $predicate){
+	public static function find(array $arr, \Closure $predicate){
 		return static::some($arr, $predicate);
 	}
 
@@ -70,8 +70,8 @@ abstract class PHPArray {
 	 * @param callable $predicate
 	 * @return mixed|null Null is returned if no match was found
 	 */
-	public static function findKey(array $arr, callable $predicate){
-		foreach($arr as $k => &$v){
+	public static function findKey(array $arr, \Closure $predicate){
+		foreach($arr as $k => $v){
 			if($predicate($v, $k)){
 				return $k;
 			}
@@ -84,11 +84,13 @@ abstract class PHPArray {
 	 * array (one which has at least 1 element with a string
 	 * as the key)
 	 * @see http://stackoverflow.com/a/4254008/570787
-	 * @param array $a
+	 * @param array $arr
 	 * @return bool
 	 */
-	public static function isAssociative(array $a){
-		return (bool)\count(\array_filter(\array_keys($a), 'is_string'));
+	public static function isAssociative(array $arr){
+		return static::some(\array_keys($arr), function($key){
+			return \is_string($key);
+		});
 	}
 	
 	/**
@@ -122,17 +124,17 @@ abstract class PHPArray {
 
 	/**
 	 * Traverses an array and generates a new array with the returned values
-	 * which a returned from the predicate function
+	 * which a returned from the callback function
 	 * @param array $arr
-	 * @param callable $predicate
+	 * @param callable $callback
 	 * @return array
 	 */
-	public static function map(array $arr, callable $predicate){
+	public static function map(array $arr, \Closure $callback){
 		
 		$ret = array();
 		
 		foreach($arr as $k => $v){
-			$ret[$k] = $predicate($v, $k);
+			$ret[$k] = $callback($v, $k);
 		}
 		
 		return $ret;
@@ -145,7 +147,7 @@ abstract class PHPArray {
 	 * @param callable $predicate
 	 * @return mixed|null Null is returned if no match was found
 	 */
-	public static function single(array $arr, callable $predicate){
+	public static function single(array $arr, \Closure $predicate){
 		
 		foreach($arr as $k => $v){
 			if($predicate($v, $k)){
@@ -163,7 +165,7 @@ abstract class PHPArray {
 	 * @param callable $predicate
 	 * @return boolean
 	 */
-	public static function some(array $arr, callable $predicate){
+	public static function some(array $arr, \Closure $predicate){
 		foreach($arr as $k => $v){
 			if($predicate($v, $k)){
 				return true;

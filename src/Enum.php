@@ -7,7 +7,8 @@ use Cola\Functions\Number;
 /**
  * Enum
  */
-abstract class Enum extends Object implements IComparable {
+abstract class Enum extends Object implements IComparable,
+		IEquatable {
 
 	/**
 	 * Internal value of the enum
@@ -66,6 +67,22 @@ abstract class Enum extends Object implements IComparable {
 	 */
 	public function __construct($val = 0) {
 		$this->__set(null, $val);
+	}
+	
+	/**
+	 * Whether this enum equals another
+	 * @param static $obj
+	 * @return bool
+	 * @throws \RuntimeException
+	 */
+	public function equals($obj) {
+		
+		if(!($obj instanceof static)){
+			throw new \RuntimeException('$obj is not a comparable instance');
+		}
+		
+		return $this->_Value === $obj->_Value;
+		
 	}
 	
 	/**

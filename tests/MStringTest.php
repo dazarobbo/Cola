@@ -190,13 +190,13 @@ class MStringTest extends \PHPUnit_Framework_TestCase{
 
 	public function testJoin(){
 
-		$set = Set::fromArray(array(
+		$arr = array(
 			'red',
 			'green',
 			'blue'
-		));
+		);
 
-		$str = MString::join($set, new MString('一二三四五'));
+		$str = MString::join($arr, new MString('一二三四五'));
 
 		$expected = 'red一二三四五green一二三四五blue';
 
