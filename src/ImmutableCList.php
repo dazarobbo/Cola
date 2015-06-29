@@ -2,7 +2,7 @@
 
 namespace Cola;
 
-use Exceptions\ReadOnlyException;
+use Cola\Exceptions\ReadOnlyException;
 
 /**
  * ImmutableCList

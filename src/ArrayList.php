@@ -4,7 +4,7 @@ namespace Cola;
 
 use Cola\Functions\PHPArray;
 use Cola\Functions\Number;
-use Exceptions\ReadOnlyException;
+use Cola\Exceptions\ReadOnlyException;
 
 /**
  * ArrayList
