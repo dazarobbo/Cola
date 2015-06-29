@@ -2,6 +2,8 @@
 
 namespace Cola;
 
+use Exceptions\ReadOnlyException;
+
 /**
  * ImmutableCList
  */
@@ -37,11 +39,11 @@ class ImmutableCList extends CList {
 	}
 	
 	public function offsetSet($offset, $value) {
-		throw new \RuntimeException('CList is read only');
+		throw new ReadOnlyException('CList is read only');
 	}
 	
 	public function offsetUnset($offset) {
-		throw new \RuntimeException('CList is read only');
+		throw new ReadOnlyException('CList is read only');
 	}
 	
 	public function remove($value) {
