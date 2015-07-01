@@ -4,6 +4,10 @@ namespace Cola\Database\DataTypes;
 
 /**
  * StringDataType
+ * 
+ * @version 1.0.0
+ * @since 1.0.0
+ * @author dazarobbo <dazarobbo@live.com>
  */
 abstract class StringDataType extends DataType {
 

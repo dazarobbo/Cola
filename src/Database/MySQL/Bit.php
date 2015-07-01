@@ -6,7 +6,12 @@ use Cola\Functions\Number;
 
 /**
  * Bit
+ * 
  * @link https://dev.mysql.com/doc/refman/5.6/en/bit-type.html
+ * 
+ * @version 1.0.0
+ * @since 1.0.0
+ * @author dazarobbo <dazarobbo@live.com>
  */
 class Bit {
 

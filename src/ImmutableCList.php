@@ -6,6 +6,15 @@ use Cola\Exceptions\ReadOnlyException;
 
 /**
  * ImmutableCList
+ * 
+ * A basic implementation of an immutable
+ * collection. Better off using an ArrayList
+ * and setting it to read only.
+ * 
+ * @see ArrayList
+ * @version 1.0.0
+ * @since 1.0.0
+ * @author dazarobbo <dazarobbo@live.com>
  */
 class ImmutableCList extends CList {
 	

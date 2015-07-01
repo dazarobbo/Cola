@@ -8,6 +8,24 @@ use Cola\Exceptions\ReadOnlyException;
 
 /**
  * ArrayList
+ * 
+ * Wrapper for PHP arrays for ease of use.
+ * 
+ * $list = new ArrayList(array(
+ *	'hello',
+ *	'world',
+ *	100,
+ *	function($v){ echo $v; }));
+ * 
+ * $filtered = $list->filter(function($v){
+ *	return \is_string($v);
+ * });
+ * 
+ * echo $filtered->join(); //helloworld
+ * 
+ * @version 1.0.0
+ * @since version 1.2.0
+ * @author dazarobbo <dazarobbo@live.com>
  */
 class ArrayList extends Object implements IList, \JsonSerializable,
 		IEquatable {
@@ -35,7 +53,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	 */
 	protected $_ReadOnly = false;
 	
-	
+		
 	/**
 	 * Creates a new ArrayList, optionally from a PHP array
 	 * @param array $arr optional
@@ -78,7 +96,13 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	 * @return mixed
 	 */
 	public function &back(){
+		
+		if($this->isEmpty()){
+			throw new \UnderflowException(__CLASS__ . ' is empty');
+		}
+		
 		return $this->_Arr[$this->count() - 1];
+		
 	}
 
 	/**
@@ -218,7 +242,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 			throw new ReadOnlyException('$obj is not a comparable type');
 		}
 		
-		return $this->_Arr == $obj->_Arr;
+		return $this->_Arr === $obj->_Arr;
 		
 	}
 	
@@ -236,13 +260,49 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	 * @return mixed
 	 */
 	public function &front(){
+		
+		if($this->isEmpty()){
+			throw new \UnderflowException(__CLASS__ . ' is empty');
+		}
+		
 		return $this->_Arr[0];
+		
 	}
 
 	public function getIterator() {
 		return new \ArrayIterator($this->_Arr);
 	}
 
+	/**
+	 * Returns a new list with each element existing in
+	 * this list and a given ICollection
+	 * @param \Cola\ICollection $coll
+	 * @return \static
+	 */
+	public function intersect(ICollection $coll){
+		
+		//array_intersect does not work on \Closure
+	
+		$arr = array();
+		$coll->copyTo($arr);
+		
+		$ret = array();
+		
+		foreach($this->_Arr as $outerItem){
+			foreach($arr as $innerItem){
+				
+				if($innerItem === $outerItem){
+					$ret[] = $outerItem;
+					break;
+				}
+				
+			}
+		}
+		
+		return new static($ret);
+		
+	}
+	
 	/**
 	 * Whether this list can be modified
 	 * @return bool
@@ -362,6 +422,54 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 		return new static(PHPArray::map($this->_Arr, $callback));
 	}
 	
+	/**
+	 * Returns the maximum value of this list. Result is undefined
+	 * for non numeric lists.
+	 * @return string
+	 * @throws \UnderflowException
+	 */
+	public function max(){
+		
+		if($this->isEmpty()){
+			throw new \UnderflowException(__CLASS__ . ' is empty');
+		}
+		
+		$max = $this->front();
+		
+		for($i = 1, $l = $this->count(); $i < $l; ++$i){
+			if(Number::greaterThan($this->_Arr[$i], $max)){
+				$max = $this->_Arr[$i];
+			}
+		}
+		
+		return $max;
+		
+	}
+	
+	/**
+	 * Returns the minimum value of this list. Result is undefined
+	 * for non numeric lists.
+	 * @return string
+	 * @throws \UnderflowException
+	 */
+	public function min(){
+		
+		if($this->isEmpty()){
+			throw new \UnderflowException(__CLASS__ . ' is empty');
+		}
+		
+		$min = $this->front();
+		
+		for($i = 1, $l = $this->count(); $i < $l; ++$i){
+			if(Number::lessThan($this->_Arr[$i], $min)){
+				$min = $this->_Arr[$i];
+			}
+		}
+		
+		return $min;
+		
+	}
+	
 	public function offsetExists($offset) {
 		
 		if(!\is_int($offset) || $offset < 0 || $offset > $this->count() - 1){
@@ -421,6 +529,10 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 			throw new ReadOnlyException(__CLASS__ . ' is read only');
 		}
 		
+		if($this->isEmpty()){
+			throw new \UnderflowException(__CLASS__ . ' is empty');
+		}
+		
 		list($ret) = \array_splice($this->_Arr, $this->count() - 1, 1);
 		
 		return $ret;
@@ -436,6 +548,10 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 		
 		if($this->_ReadOnly){
 			throw new ReadOnlyException(__CLASS__ . ' is read only');
+		}
+		
+		if($this->isEmpty()){
+			throw new \UnderflowException(__CLASS__ . ' is empty');
 		}
 		
 		list($ret) = \array_splice($this->_Arr, 0, 1);
@@ -497,11 +613,17 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	}
 	
 	/**
-	 * Returns a random item from the list
+	 * Returns a reference to a random item from the list
 	 * @return mixed
 	 */
 	public function &random(){
+	
+		if($this->isEmpty()){
+			throw new \UnderflowException(__CLASS__ . ' is empty');
+		}
+		
 		return $this->_Arr[\array_rand($this->_Arr, 1)];
+		
 	}
 
 	/**
@@ -552,6 +674,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 		}
 		
 		\array_splice($this->_Arr, $index, 1);
+		
 		return $this;
 		
 	}
@@ -575,6 +698,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 		}
 		
 		\array_splice($this->_Arr, $index, $count);
+		
 		return $this;
 		
 	}
@@ -609,6 +733,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 		}
 		
 		$this->_Arr = \array_reverse($this->_Arr);
+		
 		return $this;
 		
 	}
@@ -634,7 +759,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	}
 	
 	/**
-	 * Sets this list to read only mode
+	 * Sets this list to read only
 	 * @param bool $bool
 	 */
 	public function setReadOnly($bool = true){
@@ -749,12 +874,12 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 			
 			$arr = new static();
 			
-			$this->each(function($outerItem, $outerKey) use (&$arr, $compare){
+			$this->each(function($outerItem) use (&$arr, $compare){
 				
 				if(!$arr->some(function($cmpItem) use ($outerItem, $compare){
 					return $compare($outerItem, $cmpItem);
 				})){
-					$arr->_Arr[$outerKey] = $outerItem;
+					$arr->_Arr[] = $outerItem;
 				}
 				
 			});

@@ -4,6 +4,10 @@ namespace Cola\Database\MySQL;
 
 /**
  * MySQLTypeChooser
+ * 
+ * @version 1.0.0
+ * @since 1.0.0
+ * @author dazarobbo <dazarobbo@live.com>
  */
 class MySQLTypeChooser extends \Cola\Object implements \Cola\Database\DataTypes\ITypeChooser {
 

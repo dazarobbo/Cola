@@ -9,7 +9,21 @@ use Cola\Functions\PHPArray;
  * BitwiseEnum
  * 
  * Inheriting classes should define constants which are
- * mutually exclusive (bit flags)
+ * mutually exclusive (bit flags). For example:
+ * 
+ * class Account extends BitwiseEnum {
+ *	const USER	= 1;
+ *  const ADMIN	= 2;
+ *	const SUPER	= 4;
+ *	const ROOT	= 8;
+ * }
+ * 
+ * $rootUser = new Account(Account::USER | Account::ROOT);
+ * $super = Account::SUPER();
+ * 
+ * @version 1.0.0
+ * @since 1.0.0
+ * @author dazarobbo <dazarobbo@live.com>
  */
 abstract class BitwiseEnum extends Enum {
 

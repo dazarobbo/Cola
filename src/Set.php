@@ -6,7 +6,12 @@ namespace Cola;
  * Set
  * 
  * Similar to ArrayList, but permits strings as keys
- * for associative sets
+ * for associative sets. Use ArrayList if you don't
+ * need to use a collection as a map.
+ * 
+ * @version 1.0.0
+ * @since 1.0.0
+ * @author dazarobbo <dazarobbo@live.com>
  */
 class Set extends ArrayList {
 

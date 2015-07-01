@@ -4,6 +4,14 @@ namespace Cola;
 
 /**
  * CList
+ * 
+ * Basic implementation of IList. Better off using 
+ * ArrayList instead.
+ * 
+ * @see ArrayList
+ * @version 1.0.0
+ * @since 1.0.0
+ * @author dazarobbo <dazarobbo@live.com>
  */
 class CList extends Object implements IList {
 

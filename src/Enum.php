@@ -6,6 +6,27 @@ use Cola\Functions\Number;
 
 /**
  * Enum
+ * 
+ * Base class for an enumeration.
+ * 
+ * class Days extends Enum {
+ *	const SUNDAY = 1;
+ *	const MONDAY = 2;
+ *	const TUESDAY = 3;
+ *	const WEDNESDAY = 4;
+ *	const THURSDAY = 5;
+ *	const FRIDAY = 6;
+ *	const SATURDAY = 7;
+ * }
+ * 
+ * $mon = Days::MONDAY();
+ * $mon->Value; //2
+ * $mon->getValue(); //2
+ * $mon->getName(); //MONDAY
+ * 
+ * @version 1.0.0
+ * @since 1.0.0
+ * @author dazarobbo <dazarobbo@live.com>
  */
 abstract class Enum extends Object implements IComparable,
 		IEquatable {

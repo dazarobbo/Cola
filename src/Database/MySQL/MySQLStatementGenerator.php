@@ -4,6 +4,10 @@ namespace Cola\Database\MySQL;
 
 /**
  * MySQLStatementGenerator
+ * 
+ * @version 1.0.0
+ * @since 1.0.0
+ * @author dazarobbo <dazarobbo@live.com>
  */
 class MySQLStatementGenerator extends \Cola\Database\StatementGenerator {
 

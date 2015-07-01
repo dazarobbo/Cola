@@ -4,6 +4,10 @@ namespace Cola\Database\MySQL;
 
 /**
  * Boolean
+ * 
+ * @version 1.0.0
+ * @since 1.0.0
+ * @author dazarobbo <dazarobbo@live.com>
  */
 class Boolean extends \Cola\Database\DataTypes\BooleanDataType {
 

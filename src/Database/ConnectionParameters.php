@@ -4,6 +4,10 @@ namespace Cola\Database;
 
 /**
  * ConnectionParameters
+ * 
+ * @version 1.0.0
+ * @since 1.0.0
+ * @author dazarobbo <dazarobbo@live.com>
  */
 class ConnectionParameters extends \Cola\Object implements \ArrayAccess {
 

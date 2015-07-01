@@ -3,15 +3,19 @@
 namespace Cola;
 
 use Cola\MStringIterator;
-use Cola\StringComparison;
+use Cola\MStringComparison;
 
 /**
  * MString
  * 
- * An immutable string class.
+ * An immutable string class with multibyte support.
  * 
  * $str = new MString('一二三四五');
  * echo $str->substring(1, 3); //二三四
+ * 
+ * @version 1.0.0
+ * @since 1.0.0
+ * @author dazarobbo <dazarobbo@live.com>
  */
 class MString extends ReadOnlyArrayAccess implements \Countable,
 		\JsonSerializable, \Serializable, IComparable, IEquatable,
@@ -109,7 +113,7 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	public function compareTo($obj) {
 		
 		if(!($obj instanceof static)){
-			throw new \RuntimeException('$obj is not a comparable instance');
+			throw new \InvalidArgumentException('$obj is not a comparable instance');
 		}
 		
 		$coll = new \Collator('');
@@ -164,19 +168,19 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	/**
 	 * Whether $str exists at the end of this string
 	 * @param self $str
-	 * @param StringComparison $cmp optional comparison option, default is null (case sensitive)
+	 * @param MStringComparison $cmp optional comparison option, default is null (case sensitive)
 	 * @return bool
 	 */
-	public function endsWith(self $str, StringComparison $cmp = null){
+	public function endsWith(self $str, MStringComparison $cmp = null){
 		
-		if($cmp === null || $cmp->Value === StringComparison::CASE_SENSITIVE){
+		if($cmp === null || $cmp->Value === MStringComparison::CASE_SENSITIVE){
 			return $this
-					->substring($this->length() - $str->length(), $str->length())
+					->substring($this->count() - $str->count(), $str->count())
 					->_Value === $str->_Value;
 		}
 		else{
 			return $this
-					->substring($this->length() - $str->length(), $str->length())
+					->substring($this->count() - $str->count(), $str->count())
 					->toLower()->_Value === $str->toLower()->_Value;
 		}
 		
@@ -191,7 +195,7 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	public function equals($obj) {
 		
 		if(!($obj instanceof static)){
-			throw new \RuntimeException('$obj is not a comparable instance');
+			throw new \InvalidArgumentException('$obj is not a comparable instance');
 		}
 		
 		return $this->_Value === $obj->_Value;
@@ -240,12 +244,12 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 * Returns the index of a given string in this string
 	 * @param self $str string to search for
 	 * @param type $offset where to start searching, default is 0
-	 * @param StringComparison $cmp default is null, case sensitive
+	 * @param MStringComparison $cmp default is null, case sensitive
 	 * @return int -1 for no index found
 	 */
-	public function indexOf(self $str, $offset = 0, StringComparison $cmp = null){
+	public function indexOf(self $str, $offset = 0, MStringComparison $cmp = null){
 		
-		if($cmp === null || $cmp->Value === StringComparison::CASE_SENSITIVE){
+		if($cmp === null || $cmp->Value === MStringComparison::CASE_SENSITIVE){
 			$index = \mb_strpos($this->_Value, $str->_Value, $offset, $this->_Encoding);
 		}
 		else{
@@ -281,7 +285,7 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 * @return bool
 	 */
 	public function isNullOrEmpty(){
-		return $this->_Value === null || $this->length() === 0;
+		return $this->_Value === null || $this->count() === 0;
 	}
 	
 	/**
@@ -314,12 +318,12 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 * Returns the last index of a given string
 	 * @param self $str
 	 * @param type $offset optional offset to start searching from, default is 0
-	 * @param StringComparison $cmp optional comparison parameter, default is null for case sensitivity
+	 * @param MStringComparison $cmp optional comparison parameter, default is null for case sensitivity
 	 * @return int -1 if no match found
 	 */
-	public function lastIndexOf(self $str, $offset = 0, StringComparison $cmp = null){
+	public function lastIndexOf(self $str, $offset = 0, MStringComparison $cmp = null){
 		
-		if($cmp === null || $cmp->Value === StringComparison::CASE_SENSITIVE){
+		if($cmp === null || $cmp->Value === MStringComparison::CASE_SENSITIVE){
 			$index = \mb_strrpos($this->_Value, $str->_Value, $offset, $this->_Encoding);
 		}
 		else{
@@ -339,7 +343,7 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 		if($this->isNullOrWhitespace()){
 			return clone $this;
 		}
-		else if($this->length() === 1){
+		else if($this->count() === 1){
 			return new static(\mb_strtolower($this->_Value, $this->_Encoding), $this->_Encoding);
 		}
 		
@@ -358,7 +362,7 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	}
 
 	public function offsetExists($offset){
-		$l = $this->length();
+		$l = $this->count();
 		return $l !== 0 && $offset >= 0 && $offset < $l;
 	}
 
@@ -475,16 +479,16 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 * Whether this string starts with a given string
 	 * @see http://stackoverflow.com/a/3282864/570787
 	 * @param self $str
-	 * @param StringComparison $cmp optional comparision option, default is null (case sensitive)
+	 * @param MStringComparison $cmp optional comparision option, default is null (case sensitive)
 	 * @return bool
 	 */
-	public function startsWith(self $str, StringComparison $cmp = null){
+	public function startsWith(self $str, MStringComparison $cmp = null){
 		
-		if($cmp === null || $cmp->getValue() === StringComparison::CASE_SENSITIVE){
-			return $this->substring(0, $str->length())->_Value === $str->_Value;
+		if($cmp === null || $cmp->getValue() === MStringComparison::CASE_SENSITIVE){
+			return $this->substring(0, $str->count())->_Value === $str->_Value;
 		}
 		else{
-			return $this->substring(0, $str->length())->toLower()
+			return $this->substring(0, $str->count())->toLower()
 					->_Value === $str->toLower()->_Value;
 		}
 		
@@ -498,7 +502,7 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 		
 		$arr = array();
 		
-		for($i = 0, $l = $this->length(); $i < $l; ++$i){
+		for($i = 0, $l = $this->count(); $i < $l; ++$i){
 			$arr[] = \mb_substr($this->_Value, $i, 1, $this->_Encoding);
 		}
 		
@@ -605,7 +609,7 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 		if($this->isNullOrWhitespace()){
 			return clone $this;
 		}
-		else if($this->length() === 1){
+		else if($this->count() === 1){
 			return new static(\mb_strtoupper($this->_Value, $this->_Encoding),
 					$this->_Encoding);
 		}

@@ -6,6 +6,10 @@ use Cola\Functions\Number;
 
 /**
  * Decimal
+ * 
+ * @version 1.0.0
+ * @since 1.0.0
+ * @author dazarobbo <dazarobbo@live.com>
  */
 class Decimal extends \Cola\Database\DataTypes\DecimalDataType {
 

@@ -171,6 +171,16 @@ class ArrayListTest extends \PHPUnit_Framework_TestCase {
 		
 	}
 	
+	public function testIntersect(){
+		
+		$list = new ArrayList(array('hello', 'world', 345345));
+		$intersected = $this->_List->intersect($list);
+		
+		echo $intersected->join();
+		$this->assertCount(2, $intersected);
+		
+	}
+	
 	public function testIndexOf(){
 		$index = $this->_List->indexOf(345345);
 		$this->assertEquals(1, $index);
