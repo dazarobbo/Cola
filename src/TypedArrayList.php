@@ -144,4 +144,28 @@ class TypedArrayList extends ArrayList {
 		return parent::sentinelSearch($value);
 	}
 	
+	public function pushBack() {
+		
+		if(!$this->validArray(\func_get_args())){
+			throw new \InvalidArgumentException(
+					'A given argument is invalid for this list');
+		}
+
+		return \forward_static_call_array(array(
+			\get_parent_class(), __FUNCTION__), \func_get_args());
+		
+	}
+	
+	public function pushFront() {
+		
+		if(!$this->validArray(\func_get_args())){
+			throw new \InvalidArgumentException(
+					'A given argument is invalid for this list');
+		}
+
+		return \forward_static_call_array(array(
+			\get_parent_class(), __FUNCTION__), \func_get_args());
+		
+	}
+	
 }
