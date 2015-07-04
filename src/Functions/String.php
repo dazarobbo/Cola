@@ -5,16 +5,22 @@ namespace Cola\Functions;
 /**
  * String
  * 
- * @version 1.0.0
+ * @deprecated since version 1.3.0
+ * @version 1.1.0
  * @since 1.0.0
  * @author dazarobbo <dazarobbo@live.com>
  */
 abstract class String {
 
-	const EEMPTY = '';
+	/**
+	 * @var string
+	 */
+	const NONE = '';
+	
 	
 	/**
 	 * Compares strings - alias for strcmp
+	 * 
 	 * @param string $l
 	 * @param string $r
 	 * @return int
@@ -25,6 +31,7 @@ abstract class String {
 	
 	/**
 	 * Limits text to given sentences
+	 * 
 	 * @param string $str
 	 * @param integer $sentencesToDisplay
 	 * @return string
@@ -58,7 +65,8 @@ abstract class String {
 
 	/**
 	 * Compares two strings for quality in length-constant time
-	 * @see https://crackstation.net/hashing-security.htm#slowequals
+	 * 
+	 * @link https://crackstation.net/hashing-security.htm#slowequals
 	 * @param string $str1
 	 * @param string $str2
 	 * @return bool
@@ -79,6 +87,7 @@ abstract class String {
 	
 	/**
 	 * Check if $find exists in $str
+	 * 
 	 * @param string $str
 	 * @param string $find
 	 * @return bool
@@ -89,6 +98,7 @@ abstract class String {
 	
 	/**
 	 * Checks if a string begins with another string
+	 * 
 	 * @param string $haystack
 	 * @param string $needle
 	 * @return bool
@@ -99,9 +109,10 @@ abstract class String {
 	
 	/**
 	 * Checks if a string ends with another string
+	 * 
 	 * @param string $haystack
 	 * @param string $needle
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function endsWith($haystack, $needle){
 		
@@ -117,6 +128,7 @@ abstract class String {
 	
 	/**
 	 * Performs a regular expression match against a string
+	 * 
 	 * @param string $str
 	 * @param string $regex
 	 * @return bool
@@ -127,9 +139,10 @@ abstract class String {
 	
 	/**
 	 * Parses a string containing a HTTP header into an associative array
+	 * 
 	 * @param string $str
 	 * @return array
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
 	public static function headerStringToArray($str){
 
@@ -157,10 +170,12 @@ abstract class String {
 	
 	/**
 	 * Checks whether a given string exists in an array, optionally case insensitive
-	 * @param array $arr Array to check through
-	 * @param string $str String to look for
-	 * @param boolean $caseSensitive True for case-sensitive search, false for insensitive. Default is true
-	 * @return boolean True if it exists, otherwise false
+	 * 
+	 * @param array $arr array to check through
+	 * @param string $str sString to look for
+	 * @param boolean $caseSensitive true for case-sensitive search, false for insensitive. Default is true
+	 * @throws \InvalidArgumentException
+	 * @return boolean true if it exists, otherwise false
 	 */
 	public static function strInArray(array $arr, $str, $caseSensitive = true){
 
@@ -186,6 +201,7 @@ abstract class String {
 	
 	/**
 	 * Checks if any keywords exist in $str
+	 * 
 	 * @param array $keywords
 	 * @param string $str
 	 * @param bool $caseSensitive
@@ -214,7 +230,8 @@ abstract class String {
 	
 	/**
 	 * Converts HTML to entities according to UTF8
-	 * @param string $str String containing HTML
+	 * 
+	 * @param string $str string containing HTML
 	 * @return string The encoded string
 	 */
 	public static function htmlEncode($str){

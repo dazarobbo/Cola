@@ -5,7 +5,7 @@ namespace Cola\Functions;
 /**
  * Functions
  * 
- * @version 1.0.0
+ * @version 1.1.0
  * @since 1.0.0
  * @author dazarobbo <dazarobbo@live.com>
  */
@@ -13,9 +13,10 @@ abstract class Functions {
 
 	/**
 	 * Gets the total number of seconds from a DateInterval
-	 * @see https://stackoverflow.com/a/14277647/570787
+	 * 
+	 * @link https://stackoverflow.com/a/14277647/570787
 	 * @param \DateInterval $i
-	 * @return type
+	 * @return int
 	 */
 	public static function dateIntervalToSeconds(\DateInterval $i){
 		return $i->days * 86400 + $i->h * 3600 + $i->i * 60 + $i->s;
@@ -23,7 +24,8 @@ abstract class Functions {
 		
 	/**
 	 * Calculates the time in human-readable form from the given date
-	 * @see http://stackoverflow.com/a/501415/570787
+	 * 
+	 * @link http://stackoverflow.com/a/501415/570787
 	 * @param DateTime $d
 	 * @return string
 	 */
@@ -78,10 +80,11 @@ abstract class Functions {
 	
 	/**
 	 * Validates an IPv4 Address
-	 * @param string $ip String containing the address to validate
+	 * 
+	 * @param string $addr String containing the address to validate
 	 * @param bool $private True to allow private address ranges while validating
-	 * @param type $loopback True to allow loopback address range while validating
-	 * @return boolean True if valid, otherwise false
+	 * @param bool $loopback True to allow loopback address range while validating
+	 * @return bool true if valid, otherwise false
 	 */
 	public static function validateInternetIPAddress($addr, $private = false, $loopback = false){
 
@@ -113,13 +116,14 @@ abstract class Functions {
 			return false;
 		}
 
-		return false;
+		return true;
 
 	}
 	
 	/**
 	 * Checks whether the cookie name for sessions has been sent by the client
-	 * @return boolean True if exists, otherwise false
+	 * 
+	 * @return boolean true if exists, otherwise false
 	 */
 	public static function sessionCookieExists(){
 		return \filter_has_var(\INPUT_COOKIE, \session_name());

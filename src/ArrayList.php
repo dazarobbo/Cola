@@ -23,7 +23,7 @@ use Cola\Exceptions\ReadOnlyException;
  * 
  * echo $filtered->join(); //helloworld
  * 
- * @version 1.0.0
+ * @version 1.1.0
  * @since version 1.2.0
  * @author dazarobbo <dazarobbo@live.com>
  */
@@ -58,7 +58,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	 * Creates a new ArrayList, optionally from a PHP array
 	 * @param array $arr optional
 	 */
-	public function __construct(array $arr = null) {
+	public function __construct(array $arr = array()) {
 		if(\is_array($arr)){
 			$this->_Arr = \array_values($arr);
 		}
@@ -73,7 +73,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function add($value) {
 
 		if($this->_ReadOnly){
-			throw new ReadOnlyException(__CLASS__ . ' is read only');
+			throw new ReadOnlyException(\get_called_class() . ' is read only');
 		}
 		
 		$this->_Arr = \array_merge($this->_Arr, \func_get_args());
@@ -98,7 +98,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function &back(){
 		
 		if($this->isEmpty()){
-			throw new \UnderflowException(__CLASS__ . ' is empty');
+			throw new \UnderflowException(\get_called_class() . ' is empty');
 		}
 		
 		return $this->_Arr[$this->count() - 1];
@@ -131,7 +131,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function clear() {
 		
 		if($this->_ReadOnly){
-			throw new ReadOnlyException(__CLASS__ . ' is read only');
+			throw new ReadOnlyException(\get_called_class() . ' is read only');
 		}
 		
 		$this->_Arr = array();
@@ -235,6 +235,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	 * @param static $obj
 	 * @return bool
 	 * @throws ReadOnlyException
+	 * @todo equals operator may not work as intended
 	 */
 	public function equals($obj) {
 		
@@ -262,17 +263,17 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function &front(){
 		
 		if($this->isEmpty()){
-			throw new \UnderflowException(__CLASS__ . ' is empty');
+			throw new \UnderflowException(\get_called_class() . ' is empty');
 		}
 		
 		return $this->_Arr[0];
 		
 	}
-
+	
 	public function getIterator() {
 		return new \ArrayIterator($this->_Arr);
 	}
-
+	
 	/**
 	 * Returns a new list with each element existing in
 	 * this list and a given ICollection
@@ -281,7 +282,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	 */
 	public function intersect(ICollection $coll){
 		
-		//array_intersect does not work on \Closure
+		//array_intersect does not work on \Closure objects
 	
 		$arr = array();
 		$coll->copyTo($arr);
@@ -331,9 +332,10 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function insert($index, $value) {
 		
 		if($this->_ReadOnly){
-			throw new ReadOnlyException(__CLASS__ . ' is read only');
+			throw new ReadOnlyException(\get_called_class() . ' is read only');
 		}
 		
+		//Permit 0-index insertion
 		if(!$this->offsetExists($index)){
 			throw new \OutOfRangeException('$index is invalid');
 		}
@@ -354,7 +356,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function insertRange($index, ICollection $coll){
 		
 		if($this->_ReadOnly){
-			throw new \RuntimeException(__CLASS__ . ' is read only');
+			throw new \RuntimeException(\get_called_class() . ' is read only');
 		}
 		
 		if(!$this->offsetExists($index)){
@@ -363,6 +365,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 		
 		$arr = array();
 		$coll->copyTo($arr);
+		
 		\array_splice($this->_Arr, $index, 0, $arr);
 		
 		return $this;
@@ -409,7 +412,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 		}
 		
 		return $i;
-
+		
 	}
 	
 	/**
@@ -431,7 +434,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function max(){
 		
 		if($this->isEmpty()){
-			throw new \UnderflowException(__CLASS__ . ' is empty');
+			throw new \UnderflowException(\get_called_class() . ' is empty');
 		}
 		
 		$max = $this->front();
@@ -455,7 +458,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function min(){
 		
 		if($this->isEmpty()){
-			throw new \UnderflowException(__CLASS__ . ' is empty');
+			throw new \UnderflowException(\get_called_class() . ' is empty');
 		}
 		
 		$min = $this->front();
@@ -493,7 +496,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function offsetSet($offset, $value) {
 		
 		if($this->_ReadOnly){
-			throw new ReadOnlyException(__CLASS__ . ' is read only');
+			throw new ReadOnlyException(\get_called_class() . ' is read only');
 		}
 		
 		if(!$this->offsetExists($offset)){
@@ -507,7 +510,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function offsetUnset($offset) {
 		
 		if($this->_ReadOnly){
-			throw new ReadOnlyException(__CLASS__ . ' is read only');
+			throw new ReadOnlyException(\get_called_class() . ' is read only');
 		}
 		
 		if(!$this->offsetExists($offset)){
@@ -526,16 +529,14 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function popBack(){
 		
 		if($this->_ReadOnly){
-			throw new ReadOnlyException(__CLASS__ . ' is read only');
+			throw new ReadOnlyException(\get_called_class() . ' is read only');
 		}
 		
 		if($this->isEmpty()){
-			throw new \UnderflowException(__CLASS__ . ' is empty');
+			throw new \UnderflowException(\get_called_class() . ' is empty');
 		}
 		
-		list($ret) = \array_splice($this->_Arr, $this->count() - 1, 1);
-		
-		return $ret;
+		return \array_pop($this->_Arr);
 		
 	}
 	
@@ -547,16 +548,14 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function popFront(){
 		
 		if($this->_ReadOnly){
-			throw new ReadOnlyException(__CLASS__ . ' is read only');
+			throw new ReadOnlyException(\get_called_class() . ' is read only');
 		}
 		
 		if($this->isEmpty()){
-			throw new \UnderflowException(__CLASS__ . ' is empty');
+			throw new \UnderflowException(\get_called_class() . ' is empty');
 		}
 		
-		list($ret) = \array_splice($this->_Arr, 0, 1);
-		
-		return $ret;
+		return \array_shift($this->_Arr);
 		
 	}
 	
@@ -586,7 +585,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function pushBack(){
 		
 		if($this->_ReadOnly){
-			throw new ReadOnlyException(__CLASS__ . ' is read only');
+			throw new ReadOnlyException(\get_called_class() . ' is read only');
 		}
 		
 		$this->_Arr = \array_merge($this->_Arr, \func_get_args());
@@ -603,7 +602,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function pushFront(){
 		
 		if($this->_ReadOnly){
-			throw new ReadOnlyException(__CLASS__ . ' is read only');
+			throw new ReadOnlyException(\get_called_class() . ' is read only');
 		}
 		
 		$this->_Arr = \array_merge(\func_get_args(), $this->_Arr);
@@ -619,7 +618,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function &random(){
 	
 		if($this->isEmpty()){
-			throw new \UnderflowException(__CLASS__ . ' is empty');
+			throw new \UnderflowException(\get_called_class() . ' is empty');
 		}
 		
 		return $this->_Arr[\array_rand($this->_Arr, 1)];
@@ -646,7 +645,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function remove($value) {
 		
 		if($this->_ReadOnly){
-			throw new ReadOnlyException(__CLASS__ . ' is read only');
+			throw new ReadOnlyException(\get_called_class() . ' is read only');
 		}
 		
 		if(($key = \array_search($value, $this->_Arr)) !== false){
@@ -666,7 +665,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function removeAt($index) {
 		
 		if($this->_ReadOnly){
-			throw new \RuntimeException(__CLASS__ . ' is read only');
+			throw new \RuntimeException(\get_called_class() . ' is read only');
 		}
 		
 		if(!$this->offsetExists($index)){
@@ -690,7 +689,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function removeRange($index, $count){
 		
 		if($this->_ReadOnly){
-			throw new ReadOnlyException(__CLASS__ . ' is read only');
+			throw new ReadOnlyException(\get_called_class() . ' is read only');
 		}
 		
 		if(!$this->offsetExists($index)){
@@ -722,6 +721,44 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	}
 	
 	/**
+	 * Resizes this list to a given size. Expanding the list will
+	 * pad it with a value. Contracting the list cuts off extraneous
+	 * values.
+	 * @param int $size
+	 * @param mixed $value
+	 * @return \Cola\ArrayList
+	 * @throws ReadOnlyException
+	 * @throws \InvalidArgumentException
+	 * @throws \OutOfBoundsException
+	 */
+	public function resize($size, $value = null){
+		
+		if($this->_ReadOnly){
+			throw new ReadOnlyException(\get_called_class() . ' is read only');
+		}
+		
+		if(!\is_int($size)){
+			throw new \InvalidArgumentException('$size is not an int');
+		}
+		
+		if($size < 0){
+			throw new \OutOfBoundsException('$size cannot be less than 0');
+		}
+		
+		$len = $this->count();
+		
+		if($size > $len){
+			$this->_Arr = \array_pad($this->_Arr, $size, $value);
+		}
+		else if($size < $len){
+			$this->_Arr = \array_slice($this->_Arr, 0, $size, false);
+		}
+		
+		return $this;
+		
+	}
+	
+	/**
 	 * Reverses this list
 	 * @return \Cola\ArrayList
 	 * @throws ReadOnlyException
@@ -729,7 +766,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function reverse(){
 		
 		if($this->_ReadOnly){
-			throw new ReadOnlyException(__CLASS__ . ' is read only');
+			throw new ReadOnlyException(\get_called_class() . ' is read only');
 		}
 		
 		$this->_Arr = \array_reverse($this->_Arr);
@@ -802,7 +839,7 @@ class ArrayList extends Object implements IList, \JsonSerializable,
 	public function sort(\Closure $compare = null){
 		
 		if($this->_ReadOnly){
-			throw new ReadOnlyException(__CLASS__ . ' is read only');
+			throw new ReadOnlyException(\get_called_class() . ' is read only');
 		}
 		
 		if(\is_callable($compare)){

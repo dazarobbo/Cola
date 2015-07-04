@@ -175,8 +175,6 @@ class ArrayListTest extends \PHPUnit_Framework_TestCase {
 		
 		$list = new ArrayList(array('hello', 'world', 345345));
 		$intersected = $this->_List->intersect($list);
-		
-		echo $intersected->join();
 		$this->assertCount(2, $intersected);
 		
 	}
@@ -324,6 +322,26 @@ class ArrayListTest extends \PHPUnit_Framework_TestCase {
 		
 		$this->assertCount(100, $list);
 		$this->assertTrue($result);
+		
+	}
+	
+	public function testResize1(){
+		
+		$this->_List->resize(2);
+		
+		$this->assertEquals('hello', $this->_List->front());
+		$this->assertEquals(345345, $this->_List->back());
+		$this->assertCount(2, $this->_List);
+		
+	}
+	
+	public function testResize2(){
+		
+		$this->_List->resize(10);
+		
+		$this->assertEquals('hello', $this->_List->front());
+		$this->assertEquals(null, $this->_List->back());
+		$this->assertCount(10, $this->_List);
 		
 	}
 	

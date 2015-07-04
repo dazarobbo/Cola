@@ -19,7 +19,7 @@ namespace Cola;
  *	}
  * );
  * 
- * @version 1.0.0
+ * @version 1.1.0
  * @since version 1.2.0
  * @author dazarobbo <dazarobbo@live.com>
  */

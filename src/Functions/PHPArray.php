@@ -5,7 +5,7 @@ namespace Cola\Functions;
 /**
  * PHPArray
  * 
- * @version 1.0.0
+ * @version 2.0.0
  * @since 1.0.0
  * @author dazarobbo <dazarobbo@live.com>
  */
@@ -13,8 +13,9 @@ abstract class PHPArray {
 	
 	/**
 	 * Performs an action for each element in the array
+	 * 
 	 * @param array $arr
-	 * @param callable $action Function with two optional parameters: $v value, $k key
+	 * @param \Closure $action Function with two optional parameters: $v value, $k key
 	 */
 	public static function each(array $arr, \Closure $action){
 		foreach($arr as $k => $v){
@@ -24,9 +25,10 @@ abstract class PHPArray {
 
 	/**
 	 * Checks if all elements in the array pass a predicate function
+	 * 
 	 * @param array $arr
-	 * @param callable $predicate
-	 * @return boolean
+	 * @param \Closure $predicate
+	 * @return bool
 	 */
 	public static function every(array $arr, \Closure $predicate){
 		foreach($arr as $k => $v){
@@ -39,9 +41,10 @@ abstract class PHPArray {
 
 	/**
 	 * Traverses an array and generates a new array with the returned values
+	 * 
 	 * which pass the predicate function
 	 * @param array $arr
-	 * @param callable $predicate ($value, $key)
+	 * @param \Closure $predicate
 	 * @return array
 	 */
 	public static function filter(array $arr, \Closure $predicate){
@@ -60,9 +63,10 @@ abstract class PHPArray {
 	
 	/**
 	 * Checks if an element passes the predicate function
+	 * 
 	 * @param array $arr
-	 * @param callable $predicate
-	 * @return boolean
+	 * @param \Closure $predicate
+	 * @return bool
 	 */
 	public static function find(array $arr, \Closure $predicate){
 		return static::some($arr, $predicate);
@@ -70,9 +74,10 @@ abstract class PHPArray {
 
 	/**
 	 * Returns the key for the element which passes the given predicate function
+	 * 
 	 * @param array $arr
-	 * @param callable $predicate
-	 * @return mixed|null Null is returned if no match was found
+	 * @param \Closure $predicate
+	 * @return mixed|null null is returned if no match was found
 	 */
 	public static function findKey(array $arr, \Closure $predicate){
 		foreach($arr as $k => $v){
@@ -87,7 +92,8 @@ abstract class PHPArray {
 	 * Checks whether a given array is an associative
 	 * array (one which has at least 1 element with a string
 	 * as the key)
-	 * @see http://stackoverflow.com/a/4254008/570787
+	 * 
+	 * @link http://stackoverflow.com/a/4254008/570787
 	 * @param array $arr
 	 * @return bool
 	 */
@@ -99,8 +105,9 @@ abstract class PHPArray {
 	
 	/**
 	 * Checks whether a given set of keys exist in an array
+	 * 
 	 * @param array $arr The array to search
-	 * @return boolean True if all keys exist, otherwise false
+	 * @return bool true if all keys exist, otherwise false
 	 */
 	public static function keysExist(array $arr /*, $key1, $key2, etc...*/){
 		
@@ -116,10 +123,10 @@ abstract class PHPArray {
 	
 	/**
 	 * Checks if $key is the last element in $array
+	 * 
 	 * @param array $array
-	 * @param type $key
+	 * @param mixed $key
 	 * @return bool
-	 * @throws InvalidArgumentException
 	 */
 	public static function last(array $array, $key){
 		\end($array);
@@ -129,8 +136,9 @@ abstract class PHPArray {
 	/**
 	 * Traverses an array and generates a new array with the returned values
 	 * which a returned from the callback function
+	 * 
 	 * @param array $arr
-	 * @param callable $callback
+	 * @param \Closure $callback
 	 * @return array
 	 */
 	public static function map(array $arr, \Closure $callback){
@@ -147,9 +155,10 @@ abstract class PHPArray {
 
 	/**
 	 * Returns the value of the first matching predicate
+	 * 
 	 * @param array $arr
-	 * @param callable $predicate
-	 * @return mixed|null Null is returned if no match was found
+	 * @param \Closure $predicate
+	 * @return mixed|null null is returned if no match was found
 	 */
 	public static function single(array $arr, \Closure $predicate){
 		
@@ -165,17 +174,21 @@ abstract class PHPArray {
 
 	/**
 	 * Checks if any element passes a predicate function
+	 * 
 	 * @param array $arr
-	 * @param callable $predicate
-	 * @return boolean
+	 * @param \Closure $predicate
+	 * @return bool
 	 */
 	public static function some(array $arr, \Closure $predicate){
+		
 		foreach($arr as $k => $v){
 			if($predicate($v, $k)){
 				return true;
 			}
 		}
+		
 		return false;
+		
 	}
 
 }

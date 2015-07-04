@@ -28,8 +28,7 @@ class Set extends ArrayList {
 	}
 	
 	public function &front(){
-		$val = \reset($this->_Arr);
-		return $val;
+		return \reset($this->_Arr);
 	}
 	
 	public function offsetExists($offset) {

@@ -13,7 +13,7 @@ use Cola\MStringComparison;
  * $str = new MString('一二三四五');
  * echo $str->substring(1, 3); //二三四
  * 
- * @version 1.0.0
+ * @version 1.1.0
  * @since 1.0.0
  * @author dazarobbo <dazarobbo@live.com>
  */
@@ -94,6 +94,10 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 			throw new \InvalidArgumentException('$str must be a PHP string');
 		}
 		
+		if(!\is_string($enc)){
+			throw new \InvalidArgumentException('$enc is not a string');
+		}
+		
 		$this->_Value = $str;
 		$this->_Encoding = $enc;
 		
@@ -107,8 +111,8 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	/**
 	 * Compares this string against a given string lexicographically
 	 * @param static $obj
-	 * @return int -1, 0, or 1 depending on order (see \strcmp)
-	 * @throws \RuntimeException if comparable type is incompatible
+	 * @return int -1, 0, or 1 depending on order
+	 * @throws \InvalidArgumentException if comparable type is incomparable
 	 */
 	public function compareTo($obj) {
 		
@@ -124,7 +128,7 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 
 	/**
 	 * Length of the string
-	 * @param type $mode Ignored
+	 * @param int $mode Ignored
 	 * @return int
 	 */
 	public function count($mode = \COUNT_NORMAL) {
@@ -152,12 +156,16 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	
 	/**
 	 * Converts the string to a new encoding
-	 * @see https://php.net/manual/en/mbstring.supported-encodings.php
+	 * @link https://php.net/manual/en/mbstring.supported-encodings.php
 	 * @param string $newEncoding
 	 * @return \static
 	 */
 	public function convertEncoding($newEncoding){
 
+		if(!\is_string($newEncoding)){
+			throw new \InvalidArgumentException('$newEncoding must be a string');
+		}
+		
 		$newEncoding = \strtoupper($newEncoding);
 		
 		return new static(\mb_convert_encoding($this->_Value, $newEncoding, $this->_Encoding),
@@ -172,6 +180,14 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 * @return bool
 	 */
 	public function endsWith(self $str, MStringComparison $cmp = null){
+		
+		if($str->isNullOrEmpty()){
+			throw new \InvalidArgumentException('$str is empty');
+		}
+		
+		if($str->count() > $this->count()){
+			throw new \InvalidArgumentException('$str is longer than $this');
+		}
 		
 		if($cmp === null || $cmp->Value === MStringComparison::CASE_SENSITIVE){
 			return $this
@@ -190,7 +206,7 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 * Whether this string is equal to another
 	 * @param static $obj
 	 * @return bool
-	 * @throws \RuntimeException
+	 * @throws \InvalidArgumentException
 	 */
 	public function equals($obj) {
 		
@@ -209,6 +225,10 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 */
 	public static function fromCodeUnit($unit){
 		
+		if(!\is_numeric($unit)){
+			throw new \InvalidArgumentException('$unit must be a number');
+		}
+		
 		$str = \mb_convert_encoding(
 				\sprintf('&#%s;', $unit),
 				static::ENCODING,
@@ -225,7 +245,17 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 * @return \static
 	 */
 	public static function fromString($str, $encoding = self::ENCODING){
+		
+		if(!\is_string($str)){
+			throw new \InvalidArgumentException('$str must be a PHP string');
+		}
+		
+		if(!\is_string($encoding)){
+			throw new \InvalidArgumentException('$encoding must be a string');
+		}
+		
 		return new static($str, $encoding);
+		
 	}
 
 	/**
@@ -249,6 +279,10 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 */
 	public function indexOf(self $str, $offset = 0, MStringComparison $cmp = null){
 		
+		if(!$this->offsetExists($offset)){
+			throw new \OutOfRangeException('$offset is invalid');
+		}
+		
 		if($cmp === null || $cmp->Value === MStringComparison::CASE_SENSITIVE){
 			$index = \mb_strpos($this->_Value, $str->_Value, $offset, $this->_Encoding);
 		}
@@ -267,8 +301,17 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 * @return \static
 	 */
 	public function insert($index, self $str){
-		return new static($this->substring(0, $index) . $str->_Value .
-				$this->substring($index), $this->_Encoding);
+		
+		if(!$this->offsetExists($index)){
+			throw new \OutOfRangeException('$index is invalid');
+		}
+		
+		return new static(
+				$this->substring(0, $index) .
+				$str->_Value .
+				$this->substring($index),
+			$this->_Encoding);
+		
 	}
 	
 	/**
@@ -277,7 +320,13 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 * @return string
 	 */
 	public function __invoke($format) {
+		
+		if(!\is_string($format)){
+			throw new \InvalidArgumentException('$format must be a PHP string');
+		}
+		
 		return \sprintf($format, $this->_Value);
+		
 	}
 	
 	/**
@@ -323,6 +372,10 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 */
 	public function lastIndexOf(self $str, $offset = 0, MStringComparison $cmp = null){
 		
+		if(!$this->offsetExists($offset)){
+			throw new \OutOfRangeException('$offset is invalid');
+		}
+		
 		if($cmp === null || $cmp->Value === MStringComparison::CASE_SENSITIVE){
 			$index = \mb_strrpos($this->_Value, $str->_Value, $offset, $this->_Encoding);
 		}
@@ -355,6 +408,7 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	
 	/**
 	 * Same as count()
+	 * @see count
 	 * @return int
 	 */
 	public function length(){
@@ -362,13 +416,20 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	}
 
 	public function offsetExists($offset){
+		
+		if(!\is_int($offset)){
+			throw new \InvalidArgumentException('$offset must be an int');
+		}
+		
 		$l = $this->count();
+		
 		return $l !== 0 && $offset >= 0 && $offset < $l;
+		
 	}
 
 	public function offsetGet($offset){
 		
-		if(!isset($this[$offset])){
+		if(!$this->offsetExists($offset)){
 			throw new \OutOfBoundsException('$offset is not set');
 		}
 		
@@ -383,7 +444,13 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 * @return \static
 	 */
 	public function padLeft($num, self $char){
+		
+		if(!\is_numeric($num)){
+			throw new \InvalidArgumentException('$num is not an int');
+		}
+		
 		return new static($char->repeat($num)->_Value . $this->_Value, $this->_Encoding);
+		
 	}
 	
 	/**
@@ -393,7 +460,13 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 * @return \static
 	 */
 	public function padRight($num, self $char){
+		
+		if(!\is_numeric($num)){
+			throw new \InvalidArgumentException('$num is not an int');
+		}
+		
 		return new static($this->_Value . $char->repeat($num)->_Value, $this->_Encoding);
+		
 	}
 	
 	/**
@@ -412,8 +485,14 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 * @return \static
 	 */
 	public function repeat($times){
+		
+		if(!\is_numeric($times)){
+			throw new \InvalidArgumentException('$times is not an int');
+		}
+		
 		return new static(\implode('', \array_fill(0, $times, $this->_Value)),
 				$this->_Encoding);
+		
 	}
 
 	/**
@@ -442,8 +521,18 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 * @return \static
 	 */
 	public function substring($start, $length = null){
+		
+		if(!$this->offsetExists($start)){
+			throw new \OutOfRangeException('$start is an invalid index');
+		}
+		
+		if($length !== null && !\is_numeric($length) || $length < 0){
+			throw new \InvalidArgumentException('$length is invalid');
+		}
+		
 		return new static(\mb_substr($this->_Value, $start, $length, $this->_Encoding),
 				$this->_Encoding);
+		
 	}
 
 	/**
@@ -472,17 +561,35 @@ class MString extends ReadOnlyArrayAccess implements \Countable,
 	 * @return string[]
 	 */
 	public function split($regex = '//u', $limit = -1){
+		
+		if(!\is_string($regex)){
+			throw new \InvalidArgumentException('$regex is not a string');
+		}
+		
+		if(!\is_numeric($limit)){
+			throw new \InvalidArgumentException('$limit is not a number');
+		}
+		
 		return \preg_split($regex, $this->_Value, $limit, \PREG_SPLIT_NO_EMPTY);
+		
 	}
 	
 	/**
 	 * Whether this string starts with a given string
-	 * @see http://stackoverflow.com/a/3282864/570787
+	 * @link http://stackoverflow.com/a/3282864/570787
 	 * @param self $str
 	 * @param MStringComparison $cmp optional comparision option, default is null (case sensitive)
 	 * @return bool
 	 */
 	public function startsWith(self $str, MStringComparison $cmp = null){
+		
+		if($str->isNullOrEmpty()){
+			throw new \InvalidArgumentException('$str is empty');
+		}
+		
+		if($str->count() > $this->count()){
+			throw new \InvalidArgumentException('$str is longer than $this');
+		}
 		
 		if($cmp === null || $cmp->getValue() === MStringComparison::CASE_SENSITIVE){
 			return $this->substring(0, $str->count())->_Value === $str->_Value;

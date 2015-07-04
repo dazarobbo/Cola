@@ -200,5 +200,12 @@ class NumberFunctionsTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($exp, Number::sub($l, $r));
 		
 	}
+	
+	public function trimZeros(){
+		
+		$this->assertEquals('0', Number::sub('1', '1'));
+		$this->assertEquals('0.01', Number::add('0.00000', '0.01'));
+		
+	}
 
 }

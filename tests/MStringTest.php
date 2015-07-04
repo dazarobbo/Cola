@@ -85,14 +85,28 @@ class MStringTest extends \PHPUnit_Framework_TestCase{
 		$this->assertTrue($str->endsWith(new MString('五')));
 		$this->assertTrue($str->endsWith(new MString('二三四五')));
 		$this->assertTrue($str->endsWith(new MString('一二三四五')));
-		$this->assertTrue($str->endsWith(new MString('')));
 
 		$this->assertFalse($str->endsWith(new MString('四')));
 		$this->assertFalse($str->endsWith(new MString('一')));
 		$this->assertFalse($str->endsWith(new MString('一二三四')));
-		$this->assertFalse($str->endsWith(new MString('一二三四五一二三四五')));
 		$this->assertFalse($str->endsWith(new MString('abc')));
 
+	}
+	
+	/**
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function testInvalidEndsWith1(){
+		$str = new MString('一二三四五');
+		$this->assertTrue($str->endsWith(new MString('')));
+	}
+	
+	/**
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function testInvalidEndsWith2(){
+		$str = new MString('一二三四五');
+		$this->assertFalse($str->endsWith(new MString('一二三四五一二三四五')));
 	}
 
 	public function testCodeUnitToCharacter(){
@@ -146,11 +160,19 @@ class MStringTest extends \PHPUnit_Framework_TestCase{
 		$str2 = $str->insert(0, new MString('abc'));
 		$this->assertEquals('abc一二三四五', \strval($str2));
 
-		$str3 = $str->insert(5, new MString('abc'));
-		$this->assertEquals('一二三四五abc', \strval($str3));
+		$str3 = $str->insert(4, new MString('abc'));
+		$this->assertEquals('一二三四abc五', \strval($str3));
 
 		$this->assertNotEquals(\strval($str), \strval($str3));
 
+	}
+	
+	/**
+	 * @expectedException \OutOfRangeException
+	 */
+	public function testInvalidInsert(){
+		$str = new MString('一二三四五');
+		$str->insert(5, new MString('abc'));
 	}
 
 	public function testInvoke(){

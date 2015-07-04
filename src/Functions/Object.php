@@ -5,7 +5,7 @@ namespace Cola\Functions;
 /**
  * Object
  * 
- * @version 1.0.0
+ * @version 1.0.1
  * @since 1.0.0
  * @author dazarobbo <dazarobbo@live.com>
  */
@@ -13,16 +13,20 @@ abstract class Object {
 
 	/**
 	 * Makes a deep copy of any given value
+	 * 
 	 * @param mixed $value
 	 * @return mixed
 	 */
 	public static function copy($value){
 		
 		if(\is_object($value)){
+			
 			if(\is_callable($value)){
 				return \Closure::bind($value, null);
 			}
+			
 			return clone $value;
+			
 		}
 		
 		return $value;
@@ -31,9 +35,10 @@ abstract class Object {
 	
 	/**
 	 * Checks if the given properties exists in the specified object
+	 * 
 	 * @param mixed $obj The object to check
 	 * @param string $prop1 to check for
-	 * @return boolean True if all properties are found, otherwise false
+	 * @return boolean true if all properties are found, otherwise false
 	 */
 	public static function propertiesExist($obj /*, $prop1, $prop2, etc... */){
 		

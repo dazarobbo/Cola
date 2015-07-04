@@ -5,6 +5,14 @@ namespace Cola;
 /**
  * StringIterator
  * 
+ * Iterator for iterating over an MString
+ * 
+ * $str = new MString('一二三四五');
+ * 
+ * foreach($str as $char){
+ *	echo $char;	
+ * }
+ * 
  * @version 1.0.0
  * @since 1.0.0
  * @author dazarobbo <dazarobbo@live.com>
