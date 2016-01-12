@@ -4,16 +4,16 @@ namespace Cola\Api\Json;
 
 use Cola\Api\IRequest;
 use Cola\Json;
-use Cola\Exceptions\ReadOnlyException;
+use Cola\ReadOnlyArrayAccess;
 
 /**
  * Request
  * 
- * @version 1.0.0
+ * @version 1.1.0
  * @since version 3.0.0
  * @author dazarobbo <dazarobbo@live.com>
  */
-class Request implements IRequest {
+class Request extends ReadOnlyArrayAccess implements IRequest {
 
 	protected $_Obj;
 	
@@ -58,14 +58,6 @@ class Request implements IRequest {
 	
 	public function offsetGet($offset) {
 		return $this->_Obj->$offset;
-	}
-
-	public function offsetSet($offset, $value) {
-		throw new ReadOnlyException('Read only');
-	}
-	
-	public function offsetUnset($offset) {
-		throw new ReadOnlyException('Read only');
 	}
 	
 }

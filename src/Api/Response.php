@@ -2,6 +2,7 @@
 
 namespace Cola\Api;
 
+use Cola\Object;
 use Cola\Api\ResponseStatus;
 
 /**
@@ -10,11 +11,11 @@ use Cola\Api\ResponseStatus;
  * Base class for responses from an API, to be extended by
  * other classes
  * 
- * @version 1.0.0
+ * @version 1.1.0
  * @since version 3.0.0
  * @author dazarobbo <dazarobbo@live.com>
  */
-abstract class Response {
+abstract class Response extends Object {
 	
 	/**
 	 * The default error message to send when a more specific one cannot or should not be reported
