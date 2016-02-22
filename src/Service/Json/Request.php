@@ -14,11 +14,14 @@ namespace Cola\Service\Json{
 	 */
 	class Request extends ReadOnlyArrayAccess implements IRequest{
 		
+		public $Data;
+		
 		/**
 		 * Constructs a new request with a given JSON string
 		 * @param string $content
 		 */
 		public function __construct($content){
+			$this->Data = new \stdClass();
 			$this->deserialise($content);
 		}
 		
@@ -27,17 +30,15 @@ namespace Cola\Service\Json{
 		 * @param string $content
 		 */
 		public function deserialise($content){
-			foreach(Json::deserialise($content) as $k => $v){
-				$this->{$k} = $v;
-			}
+			$this->Data = Json::deserialise($content);
 		}
 
 		public function offsetExists($offset) {
-			return isset($this, $this->{$offset});
+			return isset($this->Data, $this->Data->{$offset});
 		}
 
 		public function offsetGet($offset) {
-			return $this->{$offset};
+			return $this->Data->{$offset};
 		}
 
 	}
