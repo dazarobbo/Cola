@@ -19,7 +19,6 @@ namespace Cola\Service\Json{
 		 * @param string $content
 		 */
 		public function __construct($content){
-			parent::__construct();
 			$this->deserialise($content);
 		}
 		
